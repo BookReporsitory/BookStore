@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using BooksManagement.Controls;
 using BooksManagement.DBOpreation;
 using BooksManagement.Properties;
+using BooksManagement.classes;
+using Book = BooksManagement.Controls.Book;
 
 namespace BooksManagement.Forms
 {
     public partial class MainForm : Form
     {
         private List<Book> books = new List<Book>();
+        private CategoryManagement categoryManagement = new CategoryManagement();
+        private BookManagement bookManagement = new BookManagement();
 
         public MainForm()
         {
@@ -102,6 +105,11 @@ namespace BooksManagement.Forms
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string[] bookFiles = openFileDialog.FileNames;
+                    CategoryForm categoryForm = new CategoryForm();
+                    if (categoryForm.ShowDialog() == DialogResult.OK)
+                    {
+                        bookManagement.ImportBooks(bookFiles, (string)categoryForm.Tag);
+                    }
                 }
             }
             catch (Exception ex)
@@ -122,6 +130,11 @@ namespace BooksManagement.Forms
                 if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                 {
                     string folderPath = folderBrowserDialog.SelectedPath;
+                    CategoryForm categoryForm = new CategoryForm();
+                    if (categoryForm.ShowDialog() == DialogResult.OK)
+                    {
+                        categoryManagement.importBookDirectory(folderPath, (string) categoryForm.Tag);
+                    }
                 }
             }
             catch (Exception ex)

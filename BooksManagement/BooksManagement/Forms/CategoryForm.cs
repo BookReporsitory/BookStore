@@ -56,12 +56,22 @@ namespace BooksManagement.Forms
 
                 tvCategoryTree.SelectedNode.Nodes.Add(newNode);
                 tvCategoryTree.SelectedNode.Expand();
+                tvCategoryTree.SelectedNode = newNode;
+            }
+        }
+
+        private void btnChangeNode_Click(object sender, EventArgs e)
+        {
+            CreateCategoryForm frm = new CreateCategoryForm(tvCategoryTree.SelectedNode.Text);
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                categoryManagement.ChangeTreeNode(tvCategoryTree.SelectedNode, (string)frm.Tag);
+                InitializeUI();
             }
         }
 
         private void btnDeleteCategory_Click(object sender, EventArgs e)
         {
-
             if (tvCategoryTree.SelectedNode.Text == Resources.CategoryForm_InitializeUI_bookLibrary || tvCategoryTree.SelectedNode.Text == CategoryManagement.NoCategory)
             {
                 MessageBox.Show(Resources.CategoryManagement_DeleteTreeNode_couldNotDeleteCategory, Resources.Error_Title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -76,6 +86,8 @@ namespace BooksManagement.Forms
 
         private void btnOk_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.OK;
+            Tag = tvCategoryTree.SelectedNode.Name;
             Close();
         }
 

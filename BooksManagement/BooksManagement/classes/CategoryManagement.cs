@@ -44,7 +44,7 @@ namespace BooksManagement.classes
             string cn = string.Empty;
             try
             {
-                cn =path.Remove(0, (BookStoreFolder + "\\").Length);
+                cn = path == BookStoreFolder ? path : path.Remove(0, (BookStoreFolder + "\\").Length);
             }
             catch (Exception ex)
             {
@@ -56,6 +56,12 @@ namespace BooksManagement.classes
         #endregion
 
         #region Public Implement
+
+        public void importBookDirectory(string sPath, string categoryPath)
+        {
+            CopyFolder(sPath, categoryPath);
+        }
+
         /// <summary>
         /// get all tree nodes
         /// </summary>
@@ -75,13 +81,14 @@ namespace BooksManagement.classes
                 Directory.CreateDirectory(BaseBookRepositoryPath + "\\" + Pictures);
             }
 
-            Category category = GetNodeCategory("BookStore");
+            Category category = DBInteraction.GetNodeCategory("BookStore");
 
             TreeNode baseNode = new TreeNode();
             baseNode.Tag = category;
             baseNode.Name = BookStoreFolder;
             baseNode.Text = Resources.CategoryForm_InitializeUI_bookLibrary;
             baseNode.ImageIndex = 0;
+            baseNode.SelectedImageIndex = 0;
 
             GetAllDirNode(baseNode);
 
@@ -95,12 +102,13 @@ namespace BooksManagement.classes
         /// <returns></returns>
         public TreeNode CreateTreeNode(string nodeName, string path)
         {
-            Category category = GetNodeCategory(GetCategoryName(path));
+            Category category = DBInteraction.GetNodeCategory(GetCategoryName(path));
             TreeNode newNode = new TreeNode();
             newNode.Text = nodeName;
             newNode.Name = path;
             newNode.Tag = category;
             newNode.ImageIndex = 1;
+            newNode.SelectedImageIndex = 1;
 
             if (!Directory.Exists(path))
             {
@@ -109,6 +117,22 @@ namespace BooksManagement.classes
 
             return newNode;
         }
+
+        public void ChangeTreeNode(TreeNode delNode, string newName)
+        {
+            if (!Directory.Exists(delNode.Name))
+            {
+                return;
+            }
+            // change folder name
+            string newPath = delNode.Name.Remove(delNode.Name.LastIndexOf('\\')) + newName;
+            Directory.Move(delNode.Name, newPath);
+            // change database category
+            string categoryName = ((Category) delNode.Tag).CategoryName;
+            ((Category)delNode.Tag).CategoryName = categoryName.Remove(categoryName.LastIndexOf('\\')) + newName;
+            DBInteraction.UpdateCategory((Category) delNode.Tag);
+        }
+
         /// <summary>
         /// delete one selected node, before that we need move all fills in it to "noCategory" folder.
         /// </summary>
@@ -146,22 +170,6 @@ namespace BooksManagement.classes
             }
         }
 
-        static public Category GetNodeCategory(string categoryName)
-        {
-            Category category = new Category();
-            category.CategoryName = categoryName;
-
-            DBInteraction.GetCategory(category);
-
-            if (string.IsNullOrEmpty(category.Id))
-            {
-                category.Id = Guid.NewGuid().ToString();
-                DBInteraction.AddCategory(category);
-            }
-
-            return category;
-        }
-
         /// <summary>
         /// delete categories and books using recursion.
         /// </summary>
@@ -183,7 +191,7 @@ namespace BooksManagement.classes
 
         static public void CopyFolder(string sPath, string dPath)
         {
-            Category category = GetNodeCategory(GetCategoryName(dPath));
+            Category category = DBInteraction.GetNodeCategory(GetCategoryName(dPath));
 
             // if need create folder
             if (!Directory.Exists(dPath))
@@ -192,7 +200,7 @@ namespace BooksManagement.classes
             }
 
             // copy fields
-            BooksManager.CopyBooks(sPath, dPath, category);
+            BookManagement.CopyDirectoryBooks(sPath, dPath, category);
 
             // loop the sub folder
             DirectoryInfo sDir = new DirectoryInfo(sPath);
@@ -203,6 +211,5 @@ namespace BooksManagement.classes
             }
         }
         #endregion
-
     }
 }

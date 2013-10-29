@@ -9,7 +9,7 @@ using BooksManagement.Properties;
 
 namespace BooksManagement.classes
 {
-    public class BooksManager
+    public class BookManagement
     {
         #region Field
 
@@ -17,21 +17,25 @@ namespace BooksManagement.classes
 
         #endregion
 
-        public bool ImportBooks(string[] books)
+        public bool ImportBooks(string[] books, string categoryPath)
         {
             if (books.Length == 0)
             {
                 return false;
             }
+            Category category = DBInteraction.GetNodeCategory(CategoryManagement.GetCategoryName(categoryPath));
             // First copy the book files into goal-folder
-            foreach (string bookPath in books)
+            foreach (string bookFullName in books)
             {
-
+                string[] b = bookFullName.Split('\\');
+                string bookName = b[b.Length - 1];
+                File.Copy(bookFullName, (categoryPath + "\\" + bookName));
+                AddaBook(bookName, categoryPath, category);
             }
 
             return false;
         }
-
+        
         public void ImportFolder(string sourceDirectory, Category category)
         {
             DirectoryInfo directoryInfo = new DirectoryInfo(sourceDirectory);
@@ -56,7 +60,7 @@ namespace BooksManagement.classes
             }
         }
 
-        static public void CopyBooks(string sPath, string dPath, Category category)
+        static public void CopyDirectoryBooks(string sPath, string dPath, Category category)
         {
             DirectoryInfo sDir = new DirectoryInfo(sPath);
             FileInfo[] fileArray = sDir.GetFiles();

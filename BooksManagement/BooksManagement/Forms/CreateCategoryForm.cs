@@ -12,9 +12,11 @@ namespace BooksManagement.Forms
 {
     public partial class CreateCategoryForm : Form
     {
-        public CreateCategoryForm()
+        public CreateCategoryForm(string nodeName = "")
         {
             InitializeComponent();
+
+            txtCategoryName.Text = nodeName;
         }
 
         private void btnOk_Click(object sender, EventArgs e)

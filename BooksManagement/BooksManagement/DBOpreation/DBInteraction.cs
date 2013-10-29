@@ -11,6 +11,23 @@ namespace BooksManagement.DBOpreation
     public class DBInteraction
     {
         #region Category Operation
+
+        static public Category GetNodeCategory(string categoryName)
+        {
+            Category category = new Category();
+            category.CategoryName = categoryName;
+
+            GetCategory(category);
+
+            if (String.IsNullOrEmpty(category.Id))
+            {
+                category.Id = Guid.NewGuid().ToString();
+                AddCategory(category);
+            }
+
+            return category;
+        }
+
         /// <summary>
         /// add a category then return the id
         /// </summary>
@@ -66,12 +83,12 @@ namespace BooksManagement.DBOpreation
             {
                 return false;
             }
-            category.Id = result as string ?? string.Empty;
+            category.Id = result as string ?? String.Empty;
 
             return GetBooksbyCategoryId(category);
         }
 
-        static public bool ChangeCategory(Category category)
+        static public bool UpdateCategory(Category category)
         {
             string sql = "update category set categoryname = ?categoryname where id = ?id";
             MySqlParameter[] parameters =
@@ -218,12 +235,11 @@ namespace BooksManagement.DBOpreation
             catch (Exception ex)
             {
 
-                return string.Empty;
+                return String.Empty;
             }
             return repositoryPath as string;
         }
 
         #endregion
-
     }
 }

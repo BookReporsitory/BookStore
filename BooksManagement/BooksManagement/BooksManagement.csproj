@@ -34,7 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>books.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
@@ -61,7 +62,7 @@
     <Compile Include="classes\BookIntroduction.cs" />
     <Compile Include="classes\Category.cs" />
     <Compile Include="classes\CategoryManagement.cs" />
-    <Compile Include="classes\BooksManager.cs" />
+    <Compile Include="classes\BookManagement.cs" />
     <Compile Include="Controls\Book.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -131,9 +132,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="books.ico" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
