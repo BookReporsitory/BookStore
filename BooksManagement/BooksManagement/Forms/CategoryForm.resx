@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="label1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="tvCategoryTree.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <metadata name="contextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>120, 17</value>
   </metadata>
@@ -128,7 +134,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAACe
-        DAAAAk1TRnQBSQFMAgEBAgEAAQgBAAEIAQABGAEAARgBAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        DAAAAk1TRnQBSQFMAgEBAgEAARABAAEQAQABGAEAARgBAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABYAMAARgDAAEBAQABCAYAAQkYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -170,11 +176,11 @@
         ASIBIwJMAUUBJAEeARACbQESAkMBbTUAAYoFswK6AdsF3AK6ArMBCQQAAVABeQFXAVEBUAEpASIBIwJM
         AUUBJAEeARACbQESAkMBbTUAAYoFswK6AdsF3AK6ArMBCQQAAVABWAF5AVgBUQEpAiIBdAJSASoBIwEQ
         AVEBegFSAQMBKQEDNQABswYJCBkDCQH/BAABUAF5AXoBWAFSAQMCIgF6AVkBUgEDASkBEAIUAUMBEAEP
-        ARM1AAOLA7MCtAO6ArsBugG0ArMBiwH/BAABUAF5AVcBUAFKASkBIgEQAW0B+AHqARUCEAFKAVIBSwEj
+        ARM1AAOLA7MCtAO6ArsBugG0ArMBiwH/BAABUAF5AVcBUAFKASkBIgEQAW0B7AHqARUCEAFKAVIBSwEj
         ASIBSjUAAYoFswK6AdsF3AK6ArMBCQQAAVABeQFYAlEBKQEiAREB6gFtARIBQwIQAhIBFAIQAeo1AAGK
-        BbMCugHbBdwCugKzAQkEAAJQAVEBUAEpAiIBEQFtAfgBbQEUAREBEAJtARICQwFtNQABigWzAroB2wXc
+        BbMCugHbBdwCugKzAQkEAAJQAVEBUAEpAiIBEQFtAewBbQEUAREBEAJtARICQwFtNQABigWzAroB2wXc
         AroCswEJBAABUQN4AVECSgEiAXoBWQFSAQMBKQEQAm0BEgJDAW01AAGKBbMCugHbBdwCugKzAQkEAAH/
-        AUoB+APvAW0BIwFMAVIBTAEkASMBEALrAW0CEwHrNQABigWzAroB2wXcAroCswEJBgABcwFKAwcBHgEk
+        AUoB7APvAW0BIwFMAVIBTAEkASMBEALrAW0CEwHrNQABigWzAroB2wXcAroCswEJBgABcwFKAwcBHgEk
         ASsBJAEBAR4BFQGSAwcB6wHyNQABCQGKAYsBkASzArQDugG0ArMBkAGLAf8LAAFEBUUBEgTzAe1VAAFu
         AwcBS5kAAUIBTQE+BwABPgMAASgDAAFgAwABGAMAAQEBAAEBBQABIAEBFgAD/wEAA/8BgAgAAeABAAEH
         CQAB4AEAAQMBgAEAAQEGAAHgAQABAwHAAQABAwYAAeABAAEDAcABAAEDBgAB4AEAAQMBwAEAAQMGAAHg
@@ -184,6 +190,21 @@
         AeABAAEDAcABAAEDBgAB4AEAAQMB8AEAAQMGAAHgAQABAwH/AYABBwYABP8BwQH/BgAG/wYACw==
 </value>
   </data>
+  <metadata name="btnAddSubCategory.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnDeleteCategory.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnOk.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnChangeNode.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

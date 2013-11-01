@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using BooksManagement.DBOpreation;
 using BooksManagement.Properties;
@@ -44,7 +45,7 @@ namespace BooksManagement.classes
             string cn = string.Empty;
             try
             {
-                cn = path == BookStoreFolder ? path : path.Remove(0, (BookStoreFolder + "\\").Length);
+                cn = path == BookStoreFolder ? "BookStore" : path.Remove(0, (BookStoreFolder + "\\").Length);
             }
             catch (Exception ex)
             {
@@ -56,11 +57,6 @@ namespace BooksManagement.classes
         #endregion
 
         #region Public Implement
-
-        public void importBookDirectory(string sPath, string categoryPath)
-        {
-            CopyFolder(sPath, categoryPath);
-        }
 
         /// <summary>
         /// get all tree nodes
@@ -81,7 +77,7 @@ namespace BooksManagement.classes
                 Directory.CreateDirectory(BaseBookRepositoryPath + "\\" + Pictures);
             }
 
-            Category category = DBInteraction.GetNodeCategory("BookStore");
+            Category category = DBInteraction.GetNodeCategory("BookStore", string.Empty);
 
             TreeNode baseNode = new TreeNode();
             baseNode.Tag = category;
@@ -100,9 +96,9 @@ namespace BooksManagement.classes
         /// <param name="nodeName">node's name</param>
         /// <param name="path">node's parnet's path</param>
         /// <returns></returns>
-        public TreeNode CreateTreeNode(string nodeName, string path)
+        public TreeNode CreateTreeNode(string nodeName, string path, string parentId)
         {
-            Category category = DBInteraction.GetNodeCategory(GetCategoryName(path));
+            Category category = DBInteraction.GetNodeCategory(GetCategoryName(path), parentId);
             TreeNode newNode = new TreeNode();
             newNode.Text = nodeName;
             newNode.Name = path;
@@ -118,19 +114,29 @@ namespace BooksManagement.classes
             return newNode;
         }
 
-        public void ChangeTreeNode(TreeNode delNode, string newName)
+        public void ChangeTreeNode(TreeNode changeNode, string newName)
         {
-            if (!Directory.Exists(delNode.Name))
+            if (!Directory.Exists(changeNode.Name))
             {
                 return;
             }
             // change folder name
-            string newPath = delNode.Name.Remove(delNode.Name.LastIndexOf('\\')) + newName;
-            Directory.Move(delNode.Name, newPath);
-            // change database category
-            string categoryName = ((Category) delNode.Tag).CategoryName;
-            ((Category)delNode.Tag).CategoryName = categoryName.Remove(categoryName.LastIndexOf('\\')) + newName;
-            DBInteraction.UpdateCategory((Category) delNode.Tag);
+            string newPath = changeNode.Name.Remove(changeNode.Name.LastIndexOf('\\') + 1) + newName;
+            Directory.Move(changeNode.Name, newPath);
+            // update database category
+            ChangeTreeNodeofDB(changeNode, changeNode.Text, newName);
+        }
+
+        private void ChangeTreeNodeofDB(TreeNode changeNode,string oldName, string newName)
+        {
+            Category category = (Category)changeNode.Tag;
+            category.CategoryName = category.CategoryName.Replace(oldName, newName);
+            DBInteraction.UpdateCategory(category);
+            // recursion call
+            foreach (TreeNode node in changeNode.Nodes)
+            {
+                ChangeTreeNodeofDB(node, oldName, newName);
+            }
         }
 
         /// <summary>
@@ -139,10 +145,10 @@ namespace BooksManagement.classes
         /// <param name="delNode"></param>
         public void DeleteTreeNode(TreeNode delNode)
         {
-            CopyFolder(delNode.Name, BookStoreFolder + "\\" + NoCategory);
+            CopyFolder(delNode.Name, BookStoreFolder + "\\" + NoCategory, DBInteraction.GetNoCategoryId());
 
             DeleteCagegoryandBooks(delNode);
-            
+
             Directory.Delete(delNode.Name, true);
             delNode.Remove();
         }
@@ -162,7 +168,7 @@ namespace BooksManagement.classes
 
             foreach (DirectoryInfo directory in subDirectories)
             {
-                TreeNode childNode = CreateTreeNode(directory.Name, directory.FullName);
+                TreeNode childNode = CreateTreeNode(directory.Name, directory.FullName, ((Category)parentNode.Tag).Id);
 
                 parentNode.Nodes.Add(childNode);
 
@@ -189,9 +195,9 @@ namespace BooksManagement.classes
 
         #region Copy Folders
 
-        static public void CopyFolder(string sPath, string dPath)
+        static public void CopyFolder(string sPath, string dPath, string parentId)
         {
-            Category category = DBInteraction.GetNodeCategory(GetCategoryName(dPath));
+            Category category = DBInteraction.GetNodeCategory(GetCategoryName(dPath), parentId);
 
             // if need create folder
             if (!Directory.Exists(dPath))
@@ -207,7 +213,7 @@ namespace BooksManagement.classes
             DirectoryInfo[] subDirArray = sDir.GetDirectories();
             foreach (DirectoryInfo subDir in subDirArray)
             {
-                CopyFolder(subDir.FullName, dPath + "\\" + subDir.Name);
+                CopyFolder(subDir.FullName, dPath + "\\" + subDir.Name, category.Id);
             }
         }
         #endregion

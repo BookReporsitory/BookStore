@@ -52,7 +52,7 @@ namespace BooksManagement.Forms
             CreateCategoryForm frm = new CreateCategoryForm();
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                TreeNode newNode = categoryManagement.CreateTreeNode((string)frm.Tag, tvCategoryTree.SelectedNode.Name + "\\" + (string)frm.Tag);
+                TreeNode newNode = categoryManagement.CreateTreeNode((string)frm.Tag, tvCategoryTree.SelectedNode.Name + "\\" + (string)frm.Tag, ((Category)tvCategoryTree.SelectedNode.Tag).Id);
 
                 tvCategoryTree.SelectedNode.Nodes.Add(newNode);
                 tvCategoryTree.SelectedNode.Expand();
@@ -87,7 +87,7 @@ namespace BooksManagement.Forms
         private void btnOk_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
-            Tag = tvCategoryTree.SelectedNode.Name;
+            Tag = tvCategoryTree.SelectedNode;
             Close();
         }
 

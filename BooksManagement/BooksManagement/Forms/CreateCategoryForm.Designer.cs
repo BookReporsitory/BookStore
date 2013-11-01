@@ -89,7 +89,7 @@
             this.MinimizeBox = false;
             this.Name = "CreateCategoryForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "新建类别";
+            this.Text = "类别名称";
             this.ResumeLayout(false);
             this.PerformLayout();
 

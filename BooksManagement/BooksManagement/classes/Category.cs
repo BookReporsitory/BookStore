@@ -9,6 +9,8 @@ namespace BooksManagement.classes
     {
         private string id;
 
+        private string parentId;
+
         private string categoryName;
 
         private List<Book> books = new List<Book>();
@@ -29,6 +31,12 @@ namespace BooksManagement.classes
         {
             get { return books; }
             set { books = value; }
+        }
+
+        public string ParentId
+        {
+            get { return parentId; }
+            set { parentId = value; }
         }
     }
 }

@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
+using BooksManagement.Controls;
 using BooksManagement.DBOpreation;
+using BooksManagement.Forms;
 using BooksManagement.Properties;
 
 namespace BooksManagement.classes
@@ -13,17 +18,39 @@ namespace BooksManagement.classes
     {
         #region Field
 
-        public const string BaseURI = "http://read.douban.com/search?q=";
+        public const string URI = "http://book.douban.com/subject_search?search_text={0}";
 
         #endregion
 
-        public bool ImportBooks(string[] books, string categoryPath)
+        public List<BookControl> GetPageBooks(int pageNum, int pageBookNum)
+        {
+            List<BookControl> bookControls = new List<BookControl>();
+
+            List<Book> books = DBInteraction.GetPageBooks(pageBookNum, pageNum);
+
+            foreach (Book book in books)
+            {
+                BookControl bookControl = new BookControl();
+                bookControl.Book = book;
+                bookControls.Add(bookControl);
+            }
+
+            return bookControls;
+        }
+
+        public int GetTotalPageNumber()
+        {
+            return Convert.ToInt32(DBInteraction.GetTotalBookNumbers());
+        }
+
+        public void ImportBooks(string[] books, TreeNode node)
         {
             if (books.Length == 0)
             {
-                return false;
+                return;
             }
-            Category category = DBInteraction.GetNodeCategory(CategoryManagement.GetCategoryName(categoryPath));
+            string categoryPath = node.Name;
+            Category category = (Category)node.Tag;
             // First copy the book files into goal-folder
             foreach (string bookFullName in books)
             {
@@ -32,31 +59,96 @@ namespace BooksManagement.classes
                 File.Copy(bookFullName, (categoryPath + "\\" + bookName));
                 AddaBook(bookName, categoryPath, category);
             }
-
-            return false;
+            new Thread(GetBookPicutres).Start();
         }
-        
-        public void ImportFolder(string sourceDirectory, Category category)
-        {
-            DirectoryInfo directoryInfo = new DirectoryInfo(sourceDirectory);
-            FileInfo[] fileInfo = directoryInfo.GetFiles();
 
-            if (!sourceDirectory.Contains(CategoryManagement.BookStoreFolder))
+        public void ImportBookDirectory(string sPath, TreeNode categoryNode)
+        {
+            CategoryManagement.CopyFolder(sPath, categoryNode.Name, ((Category)categoryNode.Tag).Id);
+
+            new Thread(GetBookPicutres).Start();
+        }
+
+        /// <summary>
+        /// get the default book picture
+        /// </summary>
+        private void GetBookPicutres()
+        {
+            List<Book> allBooks = DBInteraction.GetAllBooks();
+            WebClient wc = new WebClient();
+
+            foreach (Book book in allBooks)
             {
-                foreach (FileInfo file in fileInfo)
+                if (!string.IsNullOrEmpty(book.Picutre))
                 {
-                    file.CopyTo(CategoryManagement.BookStoreFolder + "\\" + category.CategoryName + "\\" + file.Name);
+                    continue;
+                }
+                byte[] pageSourceBytes = wc.DownloadData(new Uri(string.Format(URI, book.BookName.Substring(0, book.BookName.LastIndexOf('.')))));
+                string pageSource = Encoding.GetEncoding("utf-8").GetString(pageSourceBytes);
+
+                MatchCollection mc = Regex.Matches(pageSource, @"<\s?img[^>]+src=""([^""]+)""");
+                List<string> pic = new List<string>();
+                foreach (Match m in mc)
+                {
+                    if (m.Success)
+                    {
+                        pic.Add(m.Groups[1].Value.Trim());
+                    }
+
+                }
+                if (pic.Count > 0 && pic[0].Substring(pic[0].LastIndexOf('.')) == ".jpg")
+                {
+                    string bookName = @"D:\BookRepository\Pictures\" + book.Id + book.BookName + ".jpg";
+                    DownloadFile(pic[0], bookName, null);
+                    book.Picutre = bookName;
+                    UpdateaBook(book);
                 }
             }
-            foreach (FileInfo file in fileInfo)
-            {
-                AddaBook(file.Name, sourceDirectory, category);
-            }
+            MainForm.DelInitializeUI(true);
+        }
 
-            DirectoryInfo[] directories = directoryInfo.GetDirectories();
-            foreach (DirectoryInfo dir in directories)
+        /// <summary>
+        /// Download a file
+        /// </summary>
+        /// <param name="URL">The url of resource file</param>
+        /// <param name="Filename">The location of download file</param>
+        /// <param name="Prog">progress bar used to show the process of download</param>
+        public void DownloadFile(string URL, string filename, ProgressBar prog)
+        {
+            try
             {
-                ImportFolder(dir.ToString(), category);
+                System.Net.HttpWebRequest Myrq = (System.Net.HttpWebRequest)System.Net.HttpWebRequest.Create(URL);
+                System.Net.HttpWebResponse myrp = (System.Net.HttpWebResponse)Myrq.GetResponse();
+                long totalBytes = myrp.ContentLength;
+
+                if (prog != null)
+                {
+                    prog.Maximum = (int)totalBytes;
+                }
+
+                System.IO.Stream st = myrp.GetResponseStream();
+                System.IO.Stream so = new System.IO.FileStream(filename, System.IO.FileMode.Create);
+                long totalDownloadedByte = 0;
+                byte[] by = new byte[1024];
+                int osize = st.Read(by, 0, by.Length);
+                while (osize > 0)
+                {
+                    totalDownloadedByte = osize + totalDownloadedByte;
+                    System.Windows.Forms.Application.DoEvents();
+                    so.Write(by, 0, osize);
+
+                    if (prog != null)
+                    {
+                        prog.Value = (int)totalDownloadedByte;
+                    }
+                    osize = st.Read(by, 0, by.Length);
+                }
+                so.Close();
+                st.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("DownloadFile error: " + ex.Message);
             }
         }
 
@@ -100,10 +192,15 @@ namespace BooksManagement.classes
             book.BookName = fileName;
             book.CategoryId = category.Id;
             book.Location = dPath + "\\" + fileName;
-            book.URI = BaseURI + fileName;
+            book.URI = string.Format(URI, fileName);
             DBInteraction.AddOneBook(book);
 
             book.BookDetail.BookId = book.Id;
+        }
+        
+        public void UpdateaBook(Book book)
+        {
+            DBInteraction.UpdateBook(book);
         }
     }
 }

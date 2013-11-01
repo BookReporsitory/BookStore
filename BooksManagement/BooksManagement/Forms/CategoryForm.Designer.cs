@@ -32,14 +32,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CategoryForm));
             this.label1 = new System.Windows.Forms.Label();
             this.tvCategoryTree = new System.Windows.Forms.TreeView();
-            this.imageList = new System.Windows.Forms.ImageList(this.components);
-            this.btnAddSubCategory = new System.Windows.Forms.Button();
-            this.btnDeleteCategory = new System.Windows.Forms.Button();
-            this.btnOk = new System.Windows.Forms.Button();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiAddNode = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiChangeNode = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDeleteNode = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.btnAddSubCategory = new System.Windows.Forms.Button();
+            this.btnDeleteCategory = new System.Windows.Forms.Button();
+            this.btnOk = new System.Windows.Forms.Button();
             this.btnChangeNode = new System.Windows.Forms.Button();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -65,6 +65,39 @@
             this.tvCategoryTree.SelectedImageIndex = 1;
             this.tvCategoryTree.Size = new System.Drawing.Size(349, 371);
             this.tvCategoryTree.TabIndex = 1;
+            // 
+            // contextMenuStrip
+            // 
+            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiAddNode,
+            this.tsmiChangeNode,
+            this.tsmiDeleteNode});
+            this.contextMenuStrip.Name = "contextMenuStrip";
+            this.contextMenuStrip.Size = new System.Drawing.Size(153, 92);
+            // 
+            // tsmiAddNode
+            // 
+            this.tsmiAddNode.Image = global::BooksManagement.Properties.Resources.add;
+            this.tsmiAddNode.Name = "tsmiAddNode";
+            this.tsmiAddNode.Size = new System.Drawing.Size(152, 22);
+            this.tsmiAddNode.Text = "添加";
+            this.tsmiAddNode.Click += new System.EventHandler(this.btnAddSubCategory_Click);
+            // 
+            // tsmiChangeNode
+            // 
+            this.tsmiChangeNode.Image = global::BooksManagement.Properties.Resources.pen;
+            this.tsmiChangeNode.Name = "tsmiChangeNode";
+            this.tsmiChangeNode.Size = new System.Drawing.Size(152, 22);
+            this.tsmiChangeNode.Text = "修改";
+            this.tsmiChangeNode.Click += new System.EventHandler(this.btnChangeNode_Click);
+            // 
+            // tsmiDeleteNode
+            // 
+            this.tsmiDeleteNode.Image = global::BooksManagement.Properties.Resources.remove;
+            this.tsmiDeleteNode.Name = "tsmiDeleteNode";
+            this.tsmiDeleteNode.Size = new System.Drawing.Size(152, 22);
+            this.tsmiDeleteNode.Text = "删除";
+            this.tsmiDeleteNode.Click += new System.EventHandler(this.btnDeleteCategory_Click);
             // 
             // imageList
             // 
@@ -102,33 +135,6 @@
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
-            // 
-            // contextMenuStrip
-            // 
-            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiAddNode,
-            this.tsmiChangeNode,
-            this.tsmiDeleteNode});
-            this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(99, 70);
-            // 
-            // tsmiAddNode
-            // 
-            this.tsmiAddNode.Name = "tsmiAddNode";
-            this.tsmiAddNode.Size = new System.Drawing.Size(98, 22);
-            this.tsmiAddNode.Text = "添加";
-            // 
-            // tsmiChangeNode
-            // 
-            this.tsmiChangeNode.Name = "tsmiChangeNode";
-            this.tsmiChangeNode.Size = new System.Drawing.Size(98, 22);
-            this.tsmiChangeNode.Text = "修改";
-            // 
-            // tsmiDeleteNode
-            // 
-            this.tsmiDeleteNode.Name = "tsmiDeleteNode";
-            this.tsmiDeleteNode.Size = new System.Drawing.Size(98, 22);
-            this.tsmiDeleteNode.Text = "删除";
             // 
             // btnChangeNode
             // 

@@ -3,70 +3,122 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using BooksManagement.Controls;
 using BooksManagement.DBOpreation;
 using BooksManagement.Properties;
 using BooksManagement.classes;
-using Book = BooksManagement.Controls.Book;
 
 namespace BooksManagement.Forms
 {
     public partial class MainForm : Form
     {
-        private List<Book> books = new List<Book>();
+        private int pageNum = 1;
+        private int totalBookNUm = 0;
+        private int totalPageNum = 1;
+        private int pageBookNum = 27;
+        private int showBookNum = 0;
+
+        private int bookWide = 120;
+        private int bookHeight = 200;
+
+        private double lines;
+        private double lineBooks;
+
+        private List<BookControl> bookControls = new List<BookControl>();
         private CategoryManagement categoryManagement = new CategoryManagement();
         private BookManagement bookManagement = new BookManagement();
+
+        public delegate void DelegeteInitUI(bool initHoleUI);
+        static public DelegeteInitUI DelInitializeUI;
+
+
 
         public MainForm()
         {
             InitializeComponent();
+            DelInitializeUI = (InitializeUI);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            showRecentlyReadBooks();
+            lblMessage.Text = string.Empty;
+            InitializeUI(true);
         }
 
-        private void showRecentlyReadBooks()
+        private void InitializeUI(bool initHoleUI)
         {
-            Thread getBooks = new Thread(findbooks);
-            getBooks.Start();
+            if (InvokeRequired)
+            {
+                BeginInvoke(new DelegeteInitUI(InitializeUI), new object[] { initHoleUI });
+                return;
+            }
 
+            if (initHoleUI)
+            {
+                // Get book number
+                totalBookNUm = bookManagement.GetTotalPageNumber();
+                if (totalBookNUm == 0)
+                {
+                    return;
+                } 
+                ManagePageNum();
+            }
+            // Show books
+            new Thread(ShowRecentlyReadBooks).Start();
         }
 
-        private void findbooks()
+        public void ShowRecentlyReadBooks()
         {
-            int margin = 5;
-            int bookCount = 24;
-            int bookWide = 100;
-            int bookHight = 140;
-            double lines = Math.Ceiling((double)bookCount * (bookWide + margin) / Width) + 1;
-            double lineBooks = Math.Floor((double)(Width - 30) / (bookWide + margin));
+            bookControls = bookManagement.GetPageBooks(pageNum, pageBookNum);
 
-            books.Clear();
+            showBookNum = bookControls.Count;
 
+            ShowBooks();
+        }
+
+
+        private void ShowBooks()
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new MethodInvoker(ShowBooks));
+                return;
+            }
+            pBookList.Controls.Clear();
+
+            int index = 0;
             for (int i = 0; i < lines; i++)
             {
                 for (int j = 0; j < lineBooks; j++)
                 {
-                    if (books.Count >= bookCount)
+                    if (pBookList.Controls.Count >= showBookNum)
                     {
                         break;
                     }
-                    Book book = new Book();
-                    book.Location = new Point(bookWide * j + margin, bookHight * i);
-                    books.Add(book);
+                    bookControls[index].Location = new Point(bookWide * j, bookHeight * i);
+
+                    pBookList.Controls.Add(bookControls[index]);
+                    index++;
                 }
             }
-            BeginInvoke((MethodInvoker)fieledPanel);
         }
 
-        private void fieledPanel()
+        private void ManagePageNum()
         {
-            pBookList.Controls.Clear();
-            foreach (var book in books)
+            lineBooks = Math.Floor((double)pBookList.Width / bookWide);
+            lines = Math.Floor((double)pBookList.Height / bookHeight);
+            pageBookNum = (int)(lines * lineBooks);
+
+            totalPageNum = (int)Math.Ceiling((double)totalBookNUm / pageBookNum);
+            lblTotalPageNumber.Text = string.Format("共 {0} 页", totalPageNum);
+
+            List<string> selectPageNums = new List<string>();
+            for (int i = 1; i <= totalPageNum; i++)
             {
-                pBookList.Controls.Add(book);
+                selectPageNums.Add(i.ToString());
             }
+            cbPageNumber.DataSource = selectPageNums;
+            cbPageNumber.SelectedIndex = 0;
         }
 
         private void tsmiShowBook_Click(object sender, EventArgs e)
@@ -85,12 +137,13 @@ namespace BooksManagement.Forms
 
         private void MainForm_ResizeEnd(object sender, EventArgs e)
         {
-            showRecentlyReadBooks();
+            InitializeUI(true);
         }
+
+        #region Import Books
 
         private void tsmiSelectFiles_Click(object sender, EventArgs e)
         {
-
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = @"D:\";
             openFileDialog.RestoreDirectory = true;
@@ -108,7 +161,7 @@ namespace BooksManagement.Forms
                     CategoryForm categoryForm = new CategoryForm();
                     if (categoryForm.ShowDialog() == DialogResult.OK)
                     {
-                        bookManagement.ImportBooks(bookFiles, (string)categoryForm.Tag);
+                        bookManagement.ImportBooks(bookFiles, (TreeNode)categoryForm.Tag);
                     }
                 }
             }
@@ -116,7 +169,7 @@ namespace BooksManagement.Forms
             {
                 MessageBox.Show(Resources.MainForm_tsmiSelectFiles_Click_ErrorAddBooks + ex.Message);
             }
-
+            InitializeUI(true);
         }
 
         private void tsmiSelectFolder_Click(object sender, EventArgs e)
@@ -133,7 +186,7 @@ namespace BooksManagement.Forms
                     CategoryForm categoryForm = new CategoryForm();
                     if (categoryForm.ShowDialog() == DialogResult.OK)
                     {
-                        categoryManagement.importBookDirectory(folderPath, (string) categoryForm.Tag);
+                        bookManagement.ImportBookDirectory(folderPath, (TreeNode)categoryForm.Tag);
                     }
                 }
             }
@@ -141,18 +194,62 @@ namespace BooksManagement.Forms
             {
                 MessageBox.Show(Resources.MainForm_tsmiSelectFolder_Click_addBooksFolderError + ex.Message);
             }
+            InitializeUI(true);
         }
 
-        private void tsmiAddCategory_Click(object sender, EventArgs e)
+        #endregion
+
+        #region Book Category
+
+        private void tsmiBookCategory_Click(object sender, EventArgs e)
         {
             CategoryForm frm = new CategoryForm();
             frm.ShowDialog();
         }
 
-        private void tsmiDeleteCategory_Click(object sender, EventArgs e)
+        #endregion
+
+        #region Show Style
+
+        private void tsmiRecentlyRead_Click(object sender, EventArgs e)
         {
-            CategoryForm frm = new CategoryForm();
-            frm.ShowDialog();
+            ManagePageNum();
+            InitializeUI(false);
+        }
+
+        private void tsmiCategoryBook_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion
+
+        private void llblPageUp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            lblMessage.Text = string.Empty;
+            if (cbPageNumber.SelectedIndex < 1)
+            {
+                lblMessage.Text = "已经是第一页！";
+                return;
+            }
+            cbPageNumber.SelectedIndex--;
+        }
+
+        private void llblPageDown_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            lblMessage.Text = string.Empty;
+            if (cbPageNumber.SelectedIndex >= (totalPageNum - 1))
+            {
+                lblMessage.Text = "已经是最后一页！";
+                return;
+            }
+            cbPageNumber.SelectedIndex++;
+        }
+
+        private void cbPageNumber_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            pageNum = cbPageNumber.SelectedIndex + 1;
+            InitializeUI(false);
         }
 
     }
