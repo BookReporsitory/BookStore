@@ -41,14 +41,15 @@
             this.tsmiFindBook = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFindByBookName = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFindByDetail = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiShowBook = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiShowControl = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiShowList = new System.Windows.Forms.ToolStripMenuItem();
             this.pBasePanel = new System.Windows.Forms.Panel();
+            this.lblMessage = new System.Windows.Forms.Label();
             this.lblTotalPageNumber = new System.Windows.Forms.Label();
             this.llblPageDown = new System.Windows.Forms.LinkLabel();
             this.cbPageNumber = new System.Windows.Forms.ComboBox();
             this.llblPageUp = new System.Windows.Forms.LinkLabel();
-            this.pBookList = new System.Windows.Forms.Panel();
+            this.panelBookList = new System.Windows.Forms.Panel();
             this.dgvBooks = new System.Windows.Forms.DataGridView();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BookName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -60,7 +61,6 @@
             this.PublishDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ISBN = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Laber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lblMessage = new System.Windows.Forms.Label();
             this.menuStripMainForm.SuspendLayout();
             this.pBasePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBooks)).BeginInit();
@@ -75,7 +75,7 @@
             this.tsmiImportBooks,
             this.tsmiBookCategory,
             this.tsmiFindBook,
-            this.tsmiShowBook,
+            this.tsmiShowControl,
             this.tsmiShowList});
             this.menuStripMainForm.Location = new System.Drawing.Point(0, 0);
             this.menuStripMainForm.Name = "menuStripMainForm";
@@ -169,14 +169,14 @@
             this.tsmiFindByDetail.Size = new System.Drawing.Size(132, 22);
             this.tsmiFindByDetail.Text = "高级查找";
             // 
-            // tsmiShowBook
+            // tsmiShowControl
             // 
-            this.tsmiShowBook.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsmiShowBook.Image = ((System.Drawing.Image)(resources.GetObject("tsmiShowBook.Image")));
-            this.tsmiShowBook.Name = "tsmiShowBook";
-            this.tsmiShowBook.Size = new System.Drawing.Size(28, 23);
-            this.tsmiShowBook.Text = "图标显示";
-            this.tsmiShowBook.Click += new System.EventHandler(this.tsmiShowBook_Click);
+            this.tsmiShowControl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsmiShowControl.Image = ((System.Drawing.Image)(resources.GetObject("tsmiShowControl.Image")));
+            this.tsmiShowControl.Name = "tsmiShowControl";
+            this.tsmiShowControl.Size = new System.Drawing.Size(28, 23);
+            this.tsmiShowControl.Text = "图标显示";
+            this.tsmiShowControl.Click += new System.EventHandler(this.tsmiShowControl_Click);
             // 
             // tsmiShowList
             // 
@@ -195,13 +195,24 @@
             this.pBasePanel.Controls.Add(this.llblPageDown);
             this.pBasePanel.Controls.Add(this.cbPageNumber);
             this.pBasePanel.Controls.Add(this.llblPageUp);
-            this.pBasePanel.Controls.Add(this.pBookList);
+            this.pBasePanel.Controls.Add(this.panelBookList);
             this.pBasePanel.Controls.Add(this.dgvBooks);
             this.pBasePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pBasePanel.Location = new System.Drawing.Point(0, 29);
             this.pBasePanel.Name = "pBasePanel";
             this.pBasePanel.Size = new System.Drawing.Size(1102, 663);
             this.pBasePanel.TabIndex = 1;
+            // 
+            // lblMessage
+            // 
+            this.lblMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblMessage.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMessage.Location = new System.Drawing.Point(20, 636);
+            this.lblMessage.Name = "lblMessage";
+            this.lblMessage.Size = new System.Drawing.Size(800, 15);
+            this.lblMessage.TabIndex = 4;
+            this.lblMessage.Text = "message label";
+            this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblTotalPageNumber
             // 
@@ -253,15 +264,15 @@
             // 
             // pBookList
             // 
-            this.pBookList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panelBookList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pBookList.AutoScroll = true;
-            this.pBookList.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pBookList.Location = new System.Drawing.Point(10, 20);
-            this.pBookList.Name = "pBookList";
-            this.pBookList.Size = new System.Drawing.Size(1080, 607);
-            this.pBookList.TabIndex = 1;
+            this.panelBookList.AutoScroll = true;
+            this.panelBookList.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.panelBookList.Location = new System.Drawing.Point(10, 20);
+            this.panelBookList.Name = "pBookList";
+            this.panelBookList.Size = new System.Drawing.Size(1080, 607);
+            this.panelBookList.TabIndex = 1;
             // 
             // dgvBooks
             // 
@@ -363,17 +374,6 @@
             this.Laber.HeaderText = "标签";
             this.Laber.Name = "Laber";
             // 
-            // lblMessage
-            // 
-            this.lblMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblMessage.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMessage.Location = new System.Drawing.Point(20, 636);
-            this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(800, 15);
-            this.lblMessage.TabIndex = 4;
-            this.lblMessage.Text = "message label";
-            this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
@@ -406,11 +406,11 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiImportBooks;
         private System.Windows.Forms.ToolStripMenuItem tsmiBookCategory;
         private System.Windows.Forms.ToolStripMenuItem tsmiFindBook;
-        private System.Windows.Forms.ToolStripMenuItem tsmiShowBook;
+        private System.Windows.Forms.ToolStripMenuItem tsmiShowControl;
         private System.Windows.Forms.ToolStripMenuItem tsmiShowList;
         private System.Windows.Forms.Panel pBasePanel;
         private System.Windows.Forms.DataGridView dgvBooks;
-        private System.Windows.Forms.Panel pBookList;
+        private System.Windows.Forms.Panel panelBookList;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn BookName;
         private System.Windows.Forms.DataGridViewTextBoxColumn CategoryName;

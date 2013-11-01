@@ -117,67 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CategoryManagement_DeleteTreeNode_fileAlreadyExistText" xml:space="preserve">
-    <value>文件"{0}"在"{1}"中已存在，点击Yes覆盖此文件；点击No丢掉要移动的文件。</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="pen" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\pen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="CategoryManagement_DeleteTreeNode_fileAlreadyExistTitle" xml:space="preserve">
-    <value>文件重复</value>
-  </data>
-  <data name="MainForm_tsmiSelectFolder_Click_addBooksFolderError" xml:space="preserve">
-    <value>添加文件夹错误：</value>
-  </data>
-  <data name="CategoryForm_InitializeUI_bookLibrary" xml:space="preserve">
-    <value>书库</value>
-  </data>
-  <data name="CategoryManagement_DeleteTreeNode_couldNotDeleteCategory" xml:space="preserve">
-    <value>此分类不可删除！</value>
-  </data>
-  <data name="remove" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\remove.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="book-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\book-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="search-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\search-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="CategoryManagement_DeleteTreeNode_moveFileError" xml:space="preserve">
-    <value>移动文件"{0}"出错!
-
-{1}</value>
-  </data>
-  <data name="CategoryForm_btnDeleteCategory_Click_deleteCategoryText" xml:space="preserve">
-    <value>删除此分类后，其中所有文件将被移动到"未分类"文件夹下，确认删除此类别吗？</value>
-  </data>
-  <data name="MainForm_tsmiSelectFolder_Click_addBooksFolderPlease" xml:space="preserve">
-    <value>请选择电子书文件夹</value>
-  </data>
-  <data name="MainForm_tsmiSelectFiles_Click_addBooks" xml:space="preserve">
-    <value>添加电子书</value>
-  </data>
-  <data name="add" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MainForm_tsmiSelectFiles_Click_ErrorAddBooks" xml:space="preserve">
-    <value>添加文件错误：</value>
-  </data>
-  <data name="search" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\search.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="CategoryForm_btnDeleteCategory_Click_deleteCategoryTitle" xml:space="preserve">
-    <value>确认删除分类？</value>
-  </data>
-  <data name="MainForm_tsmiShowList_Click_testBookName" xml:space="preserve">
-    <value>乌合之众</value>
-  </data>
-  <data name="Error_Title" xml:space="preserve">
-    <value>错误</value>
-  </data>
-  <data name="803" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\803.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
+  <metadata name="pbCategory.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="contextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="lblCategoryName.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
 </root>

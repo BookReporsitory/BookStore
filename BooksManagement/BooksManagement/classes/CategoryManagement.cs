@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using BooksManagement.Controls;
 using BooksManagement.DBOpreation;
 using BooksManagement.Properties;
 
@@ -54,6 +55,27 @@ namespace BooksManagement.classes
             return cn;
         }
 
+        static public void CopyFolder(string sPath, string dPath, string parentId)
+        {
+            Category category = DBInteraction.GetNodeCategory(GetCategoryName(dPath), parentId);
+
+            // if need create folder
+            if (!Directory.Exists(dPath))
+            {
+                Directory.CreateDirectory(dPath);
+            }
+
+            // copy fields
+            BookManagement.CopyDirectoryBooks(sPath, dPath, category);
+
+            // loop the sub folder
+            DirectoryInfo sDir = new DirectoryInfo(sPath);
+            DirectoryInfo[] subDirArray = sDir.GetDirectories();
+            foreach (DirectoryInfo subDir in subDirArray)
+            {
+                CopyFolder(subDir.FullName, dPath + "\\" + subDir.Name, category.Id);
+            }
+        }
         #endregion
 
         #region Public Implement
@@ -90,6 +112,7 @@ namespace BooksManagement.classes
 
             return baseNode;
         }
+
         /// <summary>
         /// create a new tree node
         /// </summary>
@@ -127,7 +150,7 @@ namespace BooksManagement.classes
             ChangeTreeNodeofDB(changeNode, changeNode.Text, newName);
         }
 
-        private void ChangeTreeNodeofDB(TreeNode changeNode,string oldName, string newName)
+        private void ChangeTreeNodeofDB(TreeNode changeNode, string oldName, string newName)
         {
             Category category = (Category)changeNode.Tag;
             category.CategoryName = category.CategoryName.Replace(oldName, newName);
@@ -153,9 +176,31 @@ namespace BooksManagement.classes
             delNode.Remove();
         }
 
+        public int GetLevelTotalCategoryNumber(Category category)
+        {
+            return Convert.ToInt32(DBInteraction.GetTotalSubCategoryNumbers(category));
+        }
+
+        public List<CategoryControl> GetPageCategories(int pageNum, int pageBookNum, Category parentCategory)
+        {
+            List<CategoryControl> categoryControls = new List<CategoryControl>();
+
+            List<Category> categories = DBInteraction.GetPageCategories(pageBookNum, pageNum, parentCategory);
+
+            foreach (Category category in categories)
+            {
+                CategoryControl bookControl = new CategoryControl();
+                bookControl.Category = category;
+                categoryControls.Add(bookControl);
+            }
+
+            return categoryControls;
+        }
+
         #endregion
 
         #region Private Implement
+
         /// <summary>
         /// recursion method, to get node tree.
         /// </summary>
@@ -193,29 +238,6 @@ namespace BooksManagement.classes
 
         #endregion
 
-        #region Copy Folders
 
-        static public void CopyFolder(string sPath, string dPath, string parentId)
-        {
-            Category category = DBInteraction.GetNodeCategory(GetCategoryName(dPath), parentId);
-
-            // if need create folder
-            if (!Directory.Exists(dPath))
-            {
-                Directory.CreateDirectory(dPath);
-            }
-
-            // copy fields
-            BookManagement.CopyDirectoryBooks(sPath, dPath, category);
-
-            // loop the sub folder
-            DirectoryInfo sDir = new DirectoryInfo(sPath);
-            DirectoryInfo[] subDirArray = sDir.GetDirectories();
-            foreach (DirectoryInfo subDir in subDirArray)
-            {
-                CopyFolder(subDir.FullName, dPath + "\\" + subDir.Name, category.Id);
-            }
-        }
-        #endregion
     }
 }

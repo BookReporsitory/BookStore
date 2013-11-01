@@ -104,7 +104,7 @@ namespace BooksManagement.classes
                     UpdateaBook(book);
                 }
             }
-            MainForm.DelInitializeUI(true);
+            MainForm.DelInitializeBooksUI(true);
         }
 
         /// <summary>

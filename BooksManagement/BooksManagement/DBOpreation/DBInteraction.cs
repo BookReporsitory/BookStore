@@ -107,6 +107,22 @@ namespace BooksManagement.DBOpreation
             return result as string;
         }
 
+        static public string GetBookStoreCategoryId()
+        {
+            string sql = "select id from category where categoryname = 'BookStore'";
+            object result;
+            try
+            {
+                result = MySqlHelper.ExecuteScalar(CommandType.Text, sql, null);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("GetBookStoreCategoryId error:　" + ex);
+                return string.Empty;
+            }
+            return result as string;
+        }
+
         static public bool UpdateCategory(Category category)
         {
             string sql = "update category set categoryname = ?categoryname where id = ?id";
@@ -130,6 +146,54 @@ namespace BooksManagement.DBOpreation
                 return UpdateBookLocation(category);
             }
             return false;
+        }
+
+        static public object GetTotalSubCategoryNumbers(Category category)
+        {
+            string sql = "select count(*) as categorynumber from category where parentid = ?id";
+            MySqlParameter[] parameters = { new MySqlParameter("?id", category.Id) };
+            object result;
+            try
+            {
+                result = MySqlHelper.ExecuteScalar(CommandType.Text, sql, parameters);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("GetTotalSubCategoryNumbers error: " + ex.Message);
+                return 0;
+            }
+            return result ?? 0;
+        }
+
+        static public List<Category> GetPageCategories(int pageSize, int pageNum, Category parentCategory)
+        {
+            int startPoint = (pageNum - 1) * pageSize;
+            List<Category> categories = new List<Category>();
+            string sql = "SELECT id, parentid, categoryname FROM `category` where parentid = ?parentid order by parentid desc limit ?startpoint, ?pagesize;";
+            MySqlParameter[] parameters =
+                {
+                    new MySqlParameter("?parentid", parentCategory.Id),
+                    new MySqlParameter("?startpoint", startPoint),
+                    new MySqlParameter("?pagesize", pageSize)
+                };
+            try
+            {
+                MySqlDataReader msdr = MySqlHelper.ExecuteReader(CommandType.Text, sql, parameters);
+                while (msdr.Read())
+                {
+                    Category category = new Category();
+                    category.Id = msdr["id"].ToString();
+                    category.ParentId = msdr["parentid"].ToString();
+                    category.CategoryName = msdr["categoryname"].ToString();
+                    categories.Add(category);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("GetPageCategories error:　" + ex.Message);
+            }
+
+            return categories;
         }
 
         #endregion
@@ -296,8 +360,16 @@ namespace BooksManagement.DBOpreation
         static public object GetTotalBookNumbers()
         {
             string sql = "select count(*) as booknumber from book";
-            object result = MySqlHelper.ExecuteScalar(CommandType.Text, sql, null);
-
+            object result;
+            try
+            {
+                result = MySqlHelper.ExecuteScalar(CommandType.Text, sql, null);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("GetTotalBookNumbers error: " + ex.Message);
+                return 0;
+            }
             return result ?? 0;
         }
 
