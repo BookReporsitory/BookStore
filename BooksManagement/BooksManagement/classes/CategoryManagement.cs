@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using BooksManagement.Controls;
 using BooksManagement.DBOpreation;
+using BooksManagement.Forms;
 using BooksManagement.Properties;
 
 namespace BooksManagement.classes
@@ -181,16 +182,24 @@ namespace BooksManagement.classes
             return Convert.ToInt32(DBInteraction.GetTotalSubCategoryNumbers(category));
         }
 
-        public List<CategoryControl> GetPageCategories(int pageNum, int pageBookNum, Category parentCategory)
+        public List<ItemControl> GetSubCategories(Category parentCategory)
         {
-            List<CategoryControl> categoryControls = new List<CategoryControl>();
+            List<ItemControl> categoryControls = new List<ItemControl>();
 
-            List<Category> categories = DBInteraction.GetPageCategories(pageBookNum, pageNum, parentCategory);
+            List<Category> categories = DBInteraction.GetSubCategories(parentCategory);
 
             foreach (Category category in categories)
             {
-                CategoryControl bookControl = new CategoryControl();
+                ItemControl bookControl = new ItemControl(ShowType.Category);
+
                 bookControl.Category = category;
+
+                categoryControls.Add(bookControl);
+            }
+            foreach (Book book in parentCategory.Books)
+            {
+                ItemControl bookControl = new ItemControl(ShowType.Book);
+                bookControl.Book = book;
                 categoryControls.Add(bookControl);
             }
 

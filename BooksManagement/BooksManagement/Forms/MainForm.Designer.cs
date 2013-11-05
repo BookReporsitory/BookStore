@@ -44,12 +44,16 @@
             this.tsmiShowControl = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiShowList = new System.Windows.Forms.ToolStripMenuItem();
             this.pBasePanel = new System.Windows.Forms.Panel();
-            this.lblMessage = new System.Windows.Forms.Label();
-            this.lblTotalPageNumber = new System.Windows.Forms.Label();
-            this.llblPageDown = new System.Windows.Forms.LinkLabel();
-            this.cbPageNumber = new System.Windows.Forms.ComboBox();
+            this.panelCategoryControl = new System.Windows.Forms.Panel();
+            this.lblCategoryMessage = new System.Windows.Forms.Label();
+            this.btnReturnCategory = new System.Windows.Forms.Button();
+            this.panelPageControl = new System.Windows.Forms.Panel();
+            this.lblPageMessage = new System.Windows.Forms.Label();
             this.llblPageUp = new System.Windows.Forms.LinkLabel();
-            this.panelBookList = new System.Windows.Forms.Panel();
+            this.cbPageNumber = new System.Windows.Forms.ComboBox();
+            this.llblPageDown = new System.Windows.Forms.LinkLabel();
+            this.lblTotalPageNumber = new System.Windows.Forms.Label();
+            this.panelItemList = new System.Windows.Forms.Panel();
             this.dgvBooks = new System.Windows.Forms.DataGridView();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BookName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -63,6 +67,8 @@
             this.Laber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStripMainForm.SuspendLayout();
             this.pBasePanel.SuspendLayout();
+            this.panelCategoryControl.SuspendLayout();
+            this.panelPageControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBooks)).BeginInit();
             this.SuspendLayout();
             // 
@@ -80,7 +86,7 @@
             this.menuStripMainForm.Location = new System.Drawing.Point(0, 0);
             this.menuStripMainForm.Name = "menuStripMainForm";
             this.menuStripMainForm.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStripMainForm.Size = new System.Drawing.Size(1102, 29);
+            this.menuStripMainForm.Size = new System.Drawing.Size(1119, 29);
             this.menuStripMainForm.TabIndex = 0;
             this.menuStripMainForm.Text = "menuStrip1";
             // 
@@ -143,7 +149,7 @@
             this.tsmiBookCategory.Name = "tsmiBookCategory";
             this.tsmiBookCategory.Size = new System.Drawing.Size(92, 23);
             this.tsmiBookCategory.Text = "图书分类";
-            this.tsmiBookCategory.Click += new System.EventHandler(this.tsmiBookCategory_Click);
+            this.tsmiBookCategory.Click += new System.EventHandler(this.tsmiCategoryManage_Click);
             // 
             // tsmiFindBook
             // 
@@ -190,71 +196,80 @@
             // pBasePanel
             // 
             this.pBasePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pBasePanel.Controls.Add(this.lblMessage);
-            this.pBasePanel.Controls.Add(this.lblTotalPageNumber);
-            this.pBasePanel.Controls.Add(this.llblPageDown);
-            this.pBasePanel.Controls.Add(this.cbPageNumber);
-            this.pBasePanel.Controls.Add(this.llblPageUp);
-            this.pBasePanel.Controls.Add(this.panelBookList);
+            this.pBasePanel.Controls.Add(this.panelCategoryControl);
+            this.pBasePanel.Controls.Add(this.panelPageControl);
+            this.pBasePanel.Controls.Add(this.panelItemList);
             this.pBasePanel.Controls.Add(this.dgvBooks);
             this.pBasePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pBasePanel.Location = new System.Drawing.Point(0, 29);
             this.pBasePanel.Name = "pBasePanel";
-            this.pBasePanel.Size = new System.Drawing.Size(1102, 663);
+            this.pBasePanel.Size = new System.Drawing.Size(1119, 663);
             this.pBasePanel.TabIndex = 1;
             // 
-            // lblMessage
+            // panelCategoryControl
             // 
-            this.lblMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblMessage.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMessage.Location = new System.Drawing.Point(20, 636);
-            this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(800, 15);
-            this.lblMessage.TabIndex = 4;
-            this.lblMessage.Text = "message label";
-            this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.panelCategoryControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelCategoryControl.Controls.Add(this.lblCategoryMessage);
+            this.panelCategoryControl.Controls.Add(this.btnReturnCategory);
+            this.panelCategoryControl.Location = new System.Drawing.Point(512, 630);
+            this.panelCategoryControl.Name = "panelCategoryControl";
+            this.panelCategoryControl.Size = new System.Drawing.Size(572, 30);
+            this.panelCategoryControl.TabIndex = 6;
+            this.panelCategoryControl.Visible = false;
             // 
-            // lblTotalPageNumber
+            // lblCategoryMessage
             // 
-            this.lblTotalPageNumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTotalPageNumber.AutoSize = true;
-            this.lblTotalPageNumber.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalPageNumber.Location = new System.Drawing.Point(1006, 637);
-            this.lblTotalPageNumber.Name = "lblTotalPageNumber";
-            this.lblTotalPageNumber.Size = new System.Drawing.Size(43, 15);
-            this.lblTotalPageNumber.TabIndex = 4;
-            this.lblTotalPageNumber.Text = "共 0 页";
+            this.lblCategoryMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCategoryMessage.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCategoryMessage.Location = new System.Drawing.Point(17, 6);
+            this.lblCategoryMessage.Name = "lblCategoryMessage";
+            this.lblCategoryMessage.Size = new System.Drawing.Size(448, 15);
+            this.lblCategoryMessage.TabIndex = 4;
+            this.lblCategoryMessage.Text = "message label";
+            this.lblCategoryMessage.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // llblPageDown
+            // btnReturnCategory
             // 
-            this.llblPageDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.llblPageDown.AutoSize = true;
-            this.llblPageDown.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.llblPageDown.Location = new System.Drawing.Point(955, 637);
-            this.llblPageDown.Name = "llblPageDown";
-            this.llblPageDown.Size = new System.Drawing.Size(43, 15);
-            this.llblPageDown.TabIndex = 5;
-            this.llblPageDown.TabStop = true;
-            this.llblPageDown.Text = "下一页";
-            this.llblPageDown.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llblPageDown_LinkClicked);
+            this.btnReturnCategory.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnReturnCategory.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReturnCategory.Location = new System.Drawing.Point(483, 2);
+            this.btnReturnCategory.Name = "btnReturnCategory";
+            this.btnReturnCategory.Size = new System.Drawing.Size(75, 23);
+            this.btnReturnCategory.TabIndex = 2;
+            this.btnReturnCategory.Text = "返 回";
+            this.btnReturnCategory.UseVisualStyleBackColor = true;
+            this.btnReturnCategory.Click += new System.EventHandler(this.btnReturnCategory_Click);
             // 
-            // cbPageNumber
+            // panelPageControl
             // 
-            this.cbPageNumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbPageNumber.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPageNumber.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbPageNumber.Location = new System.Drawing.Point(891, 633);
-            this.cbPageNumber.Name = "cbPageNumber";
-            this.cbPageNumber.Size = new System.Drawing.Size(56, 23);
-            this.cbPageNumber.TabIndex = 2;
-            this.cbPageNumber.SelectedIndexChanged += new System.EventHandler(this.cbPageNumber_SelectedIndexChanged);
+            this.panelPageControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelPageControl.Controls.Add(this.lblPageMessage);
+            this.panelPageControl.Controls.Add(this.llblPageUp);
+            this.panelPageControl.Controls.Add(this.cbPageNumber);
+            this.panelPageControl.Controls.Add(this.llblPageDown);
+            this.panelPageControl.Controls.Add(this.lblTotalPageNumber);
+            this.panelPageControl.Location = new System.Drawing.Point(509, 630);
+            this.panelPageControl.Name = "panelPageControl";
+            this.panelPageControl.Size = new System.Drawing.Size(587, 30);
+            this.panelPageControl.TabIndex = 6;
+            // 
+            // lblPageMessage
+            // 
+            this.lblPageMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblPageMessage.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPageMessage.Location = new System.Drawing.Point(17, 6);
+            this.lblPageMessage.Name = "lblPageMessage";
+            this.lblPageMessage.Size = new System.Drawing.Size(338, 15);
+            this.lblPageMessage.TabIndex = 4;
+            this.lblPageMessage.Text = "message label";
+            this.lblPageMessage.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // llblPageUp
             // 
             this.llblPageUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.llblPageUp.AutoSize = true;
             this.llblPageUp.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.llblPageUp.Location = new System.Drawing.Point(840, 637);
+            this.llblPageUp.Location = new System.Drawing.Point(371, 6);
             this.llblPageUp.Name = "llblPageUp";
             this.llblPageUp.Size = new System.Drawing.Size(43, 15);
             this.llblPageUp.TabIndex = 3;
@@ -262,17 +277,52 @@
             this.llblPageUp.Text = "上一页";
             this.llblPageUp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llblPageUp_LinkClicked);
             // 
-            // pBookList
+            // cbPageNumber
             // 
-            this.panelBookList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.cbPageNumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbPageNumber.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPageNumber.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbPageNumber.Location = new System.Drawing.Point(422, 2);
+            this.cbPageNumber.Name = "cbPageNumber";
+            this.cbPageNumber.Size = new System.Drawing.Size(56, 23);
+            this.cbPageNumber.TabIndex = 2;
+            this.cbPageNumber.SelectedIndexChanged += new System.EventHandler(this.cbPageNumber_SelectedIndexChanged);
+            // 
+            // llblPageDown
+            // 
+            this.llblPageDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.llblPageDown.AutoSize = true;
+            this.llblPageDown.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.llblPageDown.Location = new System.Drawing.Point(486, 6);
+            this.llblPageDown.Name = "llblPageDown";
+            this.llblPageDown.Size = new System.Drawing.Size(43, 15);
+            this.llblPageDown.TabIndex = 5;
+            this.llblPageDown.TabStop = true;
+            this.llblPageDown.Text = "下一页";
+            this.llblPageDown.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llblPageDown_LinkClicked);
+            // 
+            // lblTotalPageNumber
+            // 
+            this.lblTotalPageNumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotalPageNumber.AutoSize = true;
+            this.lblTotalPageNumber.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalPageNumber.Location = new System.Drawing.Point(537, 6);
+            this.lblTotalPageNumber.Name = "lblTotalPageNumber";
+            this.lblTotalPageNumber.Size = new System.Drawing.Size(43, 15);
+            this.lblTotalPageNumber.TabIndex = 4;
+            this.lblTotalPageNumber.Text = "共 0 页";
+            // 
+            // panelItemList
+            // 
+            this.panelItemList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelBookList.AutoScroll = true;
-            this.panelBookList.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panelBookList.Location = new System.Drawing.Point(10, 20);
-            this.panelBookList.Name = "pBookList";
-            this.panelBookList.Size = new System.Drawing.Size(1080, 607);
-            this.panelBookList.TabIndex = 1;
+            this.panelItemList.AutoScroll = true;
+            this.panelItemList.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.panelItemList.Location = new System.Drawing.Point(10, 20);
+            this.panelItemList.Name = "panelItemList";
+            this.panelItemList.Size = new System.Drawing.Size(1097, 607);
+            this.panelItemList.TabIndex = 1;
             // 
             // dgvBooks
             // 
@@ -309,7 +359,7 @@
             this.dgvBooks.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvBooks.ShowCellErrors = false;
             this.dgvBooks.ShowEditingIcon = false;
-            this.dgvBooks.Size = new System.Drawing.Size(1100, 627);
+            this.dgvBooks.Size = new System.Drawing.Size(1117, 627);
             this.dgvBooks.TabIndex = 0;
             this.dgvBooks.Visible = false;
             // 
@@ -378,7 +428,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1102, 692);
+            this.ClientSize = new System.Drawing.Size(1119, 692);
             this.Controls.Add(this.pBasePanel);
             this.Controls.Add(this.menuStripMainForm);
             this.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -389,10 +439,13 @@
             this.Text = "电子书管理系统";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
+            this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.menuStripMainForm.ResumeLayout(false);
             this.menuStripMainForm.PerformLayout();
             this.pBasePanel.ResumeLayout(false);
-            this.pBasePanel.PerformLayout();
+            this.panelCategoryControl.ResumeLayout(false);
+            this.panelPageControl.ResumeLayout(false);
+            this.panelPageControl.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBooks)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -410,7 +463,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiShowList;
         private System.Windows.Forms.Panel pBasePanel;
         private System.Windows.Forms.DataGridView dgvBooks;
-        private System.Windows.Forms.Panel panelBookList;
+        private System.Windows.Forms.Panel panelItemList;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn BookName;
         private System.Windows.Forms.DataGridViewTextBoxColumn CategoryName;
@@ -431,7 +484,11 @@
         private System.Windows.Forms.LinkLabel llblPageDown;
         private System.Windows.Forms.ComboBox cbPageNumber;
         private System.Windows.Forms.LinkLabel llblPageUp;
-        private System.Windows.Forms.Label lblMessage;
+        private System.Windows.Forms.Label lblPageMessage;
+        private System.Windows.Forms.Button btnReturnCategory;
+        private System.Windows.Forms.Panel panelPageControl;
+        private System.Windows.Forms.Panel panelCategoryControl;
+        private System.Windows.Forms.Label lblCategoryMessage;
 
     }
 }

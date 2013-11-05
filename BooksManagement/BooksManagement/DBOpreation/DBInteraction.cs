@@ -88,7 +88,7 @@ namespace BooksManagement.DBOpreation
             }
             category.Id = result as string ?? String.Empty;
 
-            return GetBooksbyCategoryId(category);
+            return true;
         }
 
         static public string GetNoCategoryId()
@@ -107,20 +107,27 @@ namespace BooksManagement.DBOpreation
             return result as string;
         }
 
-        static public string GetBookStoreCategoryId()
+        static public Category GetBookStoreCategory()
         {
-            string sql = "select id from category where categoryname = 'BookStore'";
-            object result;
+            Category category = new Category();
+            string sql = "select id, categoryname from category where categoryname = 'BookStore'";
             try
             {
-                result = MySqlHelper.ExecuteScalar(CommandType.Text, sql, null);
+                using (MySqlDataReader result = MySqlHelper.ExecuteReader(CommandType.Text, sql, null))
+                {
+                    while (result.Read())
+                    {
+                        category.Id = result["id"].ToString();
+                        category.CategoryName = result["categoryname"].ToString();
+                    }
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("GetBookStoreCategoryId error:　" + ex);
-                return string.Empty;
+                MessageBox.Show("GetBookStoreCategory error:　" + ex);
+                return null;
             }
-            return result as string;
+            return category;
         }
 
         static public bool UpdateCategory(Category category)
@@ -165,32 +172,32 @@ namespace BooksManagement.DBOpreation
             return result ?? 0;
         }
 
-        static public List<Category> GetPageCategories(int pageSize, int pageNum, Category parentCategory)
+        static public List<Category> GetSubCategories(Category parentCategory)
         {
-            int startPoint = (pageNum - 1) * pageSize;
             List<Category> categories = new List<Category>();
-            string sql = "SELECT id, parentid, categoryname FROM `category` where parentid = ?parentid order by parentid desc limit ?startpoint, ?pagesize;";
+            string sql = "SELECT id, parentid, categoryname FROM `category` where parentid = ?parentid order by categoryname desc;";
             MySqlParameter[] parameters =
                 {
-                    new MySqlParameter("?parentid", parentCategory.Id),
-                    new MySqlParameter("?startpoint", startPoint),
-                    new MySqlParameter("?pagesize", pageSize)
+                    new MySqlParameter("?parentid", parentCategory.Id)
                 };
             try
             {
-                MySqlDataReader msdr = MySqlHelper.ExecuteReader(CommandType.Text, sql, parameters);
-                while (msdr.Read())
+                using (MySqlDataReader msdr = MySqlHelper.ExecuteReader(CommandType.Text, sql, parameters))
                 {
-                    Category category = new Category();
-                    category.Id = msdr["id"].ToString();
-                    category.ParentId = msdr["parentid"].ToString();
-                    category.CategoryName = msdr["categoryname"].ToString();
-                    categories.Add(category);
+                    while (msdr.Read())
+                    {
+                        Category category = new Category();
+                        category.Id = msdr["id"].ToString();
+                        category.ParentId = msdr["parentid"].ToString();
+                        category.CategoryName = msdr["categoryname"].ToString();
+
+                        categories.Add(category);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("GetPageCategories error:　" + ex.Message);
+                MessageBox.Show("GetSubCategories error:　" + ex.Message);
             }
 
             return categories;
@@ -203,22 +210,24 @@ namespace BooksManagement.DBOpreation
         static public bool GetBooksbyCategoryId(Category catagory)
         {
             string sql =
-                "select id, categoryid, bookname, location, picture, uri, readtimes from book where categoryid = ?categoryid;";
+                "select id, categoryid, bookname, location, picture, uri, readtimes from book where categoryid = ?categoryid order by bookname desc;";
             MySqlParameter[] parameters = { new MySqlParameter("?categoryid", catagory.Id) };
             try
             {
-                MySqlDataReader msdr = MySqlHelper.ExecuteReader(CommandType.Text, sql, parameters);
-                while (msdr.Read())
+                using (MySqlDataReader msdr = MySqlHelper.ExecuteReader(CommandType.Text, sql, parameters))
                 {
-                    Book book = new Book();
-                    book.Id = msdr["id"].ToString();
-                    book.CategoryId = catagory.Id;
-                    book.BookName = msdr["bookname"].ToString();
-                    book.Location = msdr["location"].ToString();
-                    book.Picutre = msdr["picture"].ToString();
-                    book.URI = msdr["uri"].ToString();
-                    book.ReadTimes = (int)msdr["readtimes"];
-                    catagory.Books.Add(book);
+                    while (msdr.Read())
+                    {
+                        Book book = new Book();
+                        book.Id = msdr["id"].ToString();
+                        book.CategoryId = catagory.Id;
+                        book.BookName = msdr["bookname"].ToString();
+                        book.Location = msdr["location"].ToString();
+                        book.Picutre = msdr["picture"].ToString();
+                        book.URI = msdr["uri"].ToString();
+                        book.ReadTimes = (int)msdr["readtimes"];
+                        catagory.Books.Add(book);
+                    }
                 }
                 return true;
             }
@@ -235,18 +244,20 @@ namespace BooksManagement.DBOpreation
             string sql = "select id, categoryid, bookname, location, picture, uri, readtimes from book;";
             try
             {
-                MySqlDataReader msdr = MySqlHelper.ExecuteReader(CommandType.Text, sql, null);
-                while (msdr.Read())
+                using (MySqlDataReader msdr = MySqlHelper.ExecuteReader(CommandType.Text, sql, null))
                 {
-                    Book book = new Book();
-                    book.Id = msdr["id"].ToString();
-                    book.CategoryId = msdr["categoryid"].ToString();
-                    book.BookName = msdr["bookname"].ToString();
-                    book.Location = msdr["location"].ToString();
-                    book.Picutre = msdr["picture"].ToString();
-                    book.URI = msdr["uri"].ToString();
-                    book.ReadTimes = (int)msdr["readtimes"];
-                    books.Add(book);
+                    while (msdr.Read())
+                    {
+                        Book book = new Book();
+                        book.Id = msdr["id"].ToString();
+                        book.CategoryId = msdr["categoryid"].ToString();
+                        book.BookName = msdr["bookname"].ToString();
+                        book.Location = msdr["location"].ToString();
+                        book.Picutre = msdr["picture"].ToString();
+                        book.URI = msdr["uri"].ToString();
+                        book.ReadTimes = (int)msdr["readtimes"];
+                        books.Add(book);
+                    }
                 }
             }
             catch (Exception ex)
@@ -385,18 +396,20 @@ namespace BooksManagement.DBOpreation
                 };
             try
             {
-                MySqlDataReader msdr = MySqlHelper.ExecuteReader(CommandType.Text, sql, parameters);
-                while (msdr.Read())
+                using (MySqlDataReader msdr = MySqlHelper.ExecuteReader(CommandType.Text, sql, parameters))
                 {
-                    Book book = new Book();
-                    book.Id = msdr["id"].ToString();
-                    book.CategoryId = msdr["categoryid"].ToString();
-                    book.BookName = msdr["bookname"].ToString();
-                    book.Location = msdr["location"].ToString();
-                    book.Picutre = msdr["picture"].ToString();
-                    book.URI = msdr["uri"].ToString();
-                    book.ReadTimes = (int)msdr["readtimes"];
-                    books.Add(book);
+                    while (msdr.Read())
+                    {
+                        Book book = new Book();
+                        book.Id = msdr["id"].ToString();
+                        book.CategoryId = msdr["categoryid"].ToString();
+                        book.BookName = msdr["bookname"].ToString();
+                        book.Location = msdr["location"].ToString();
+                        book.Picutre = msdr["picture"].ToString();
+                        book.URI = msdr["uri"].ToString();
+                        book.ReadTimes = (int)msdr["readtimes"];
+                        books.Add(book);
+                    }
                 }
             }
             catch (Exception ex)

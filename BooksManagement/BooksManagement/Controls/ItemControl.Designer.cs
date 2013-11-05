@@ -1,6 +1,6 @@
 ﻿namespace BooksManagement.Controls
 {
-    partial class CategoryControl
+    partial class ItemControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,29 +29,30 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.pbCategory = new System.Windows.Forms.PictureBox();
+            this.pbItem = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiReadBook = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSearchBook = new System.Windows.Forms.ToolStripMenuItem();
-            this.lblCategoryName = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCategory)).BeginInit();
+            this.lblItmeName = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.pbItem)).BeginInit();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // pbCategory
+            // pbItem
             // 
-            this.pbCategory.BackColor = System.Drawing.Color.Transparent;
-            this.pbCategory.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbCategory.Image = global::BooksManagement.Properties.Resources._803;
-            this.pbCategory.Location = new System.Drawing.Point(5, 3);
-            this.pbCategory.Name = "pbCategory";
-            this.pbCategory.Size = new System.Drawing.Size(110, 150);
-            this.pbCategory.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbCategory.TabIndex = 0;
-            this.pbCategory.TabStop = false;
-            this.pbCategory.Click += new System.EventHandler(this.pbCategory_Click);
-            this.pbCategory.MouseLeave += new System.EventHandler(this.Category_MouseLeave);
-            this.pbCategory.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Category_MouseMove);
+            this.pbItem.BackColor = System.Drawing.Color.Transparent;
+            this.pbItem.ContextMenuStrip = this.contextMenuStrip;
+            this.pbItem.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbItem.Image = global::BooksManagement.Properties.Resources.book__2_;
+            this.pbItem.Location = new System.Drawing.Point(5, 3);
+            this.pbItem.Name = "pbItem";
+            this.pbItem.Size = new System.Drawing.Size(110, 150);
+            this.pbItem.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbItem.TabIndex = 0;
+            this.pbItem.TabStop = false;
+            this.pbItem.Click += new System.EventHandler(this.pbItem_Click);
+            this.pbItem.MouseLeave += new System.EventHandler(this.Item_MouseLeave);
+            this.pbItem.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Book_MouseMove);
             // 
             // contextMenuStrip
             // 
@@ -67,7 +68,7 @@
             this.tsmiReadBook.Name = "tsmiReadBook";
             this.tsmiReadBook.Size = new System.Drawing.Size(148, 22);
             this.tsmiReadBook.Text = "阅读";
-            this.tsmiReadBook.Click += new System.EventHandler(this.pbCategory_Click);
+            this.tsmiReadBook.Click += new System.EventHandler(this.pbItem_Click);
             // 
             // tsmiSearchBook
             // 
@@ -75,38 +76,39 @@
             this.tsmiSearchBook.Name = "tsmiSearchBook";
             this.tsmiSearchBook.Size = new System.Drawing.Size(148, 22);
             this.tsmiSearchBook.Text = "查询书籍信息";
-            this.tsmiSearchBook.Click += new System.EventHandler(this.lblCategoryName_Click);
+            this.tsmiSearchBook.Click += new System.EventHandler(this.lblItemName_Click);
             // 
-            // lblCategoryName
+            // lblItmeName
             // 
-            this.lblCategoryName.BackColor = System.Drawing.Color.Transparent;
-            this.lblCategoryName.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblCategoryName.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCategoryName.Location = new System.Drawing.Point(5, 153);
-            this.lblCategoryName.Name = "lblCategoryName";
-            this.lblCategoryName.Size = new System.Drawing.Size(110, 46);
-            this.lblCategoryName.TabIndex = 2;
-            this.lblCategoryName.Text = "分类";
-            this.lblCategoryName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCategoryName.Click += new System.EventHandler(this.lblCategoryName_Click);
-            this.lblCategoryName.MouseLeave += new System.EventHandler(this.Category_MouseLeave);
-            this.lblCategoryName.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Category_MouseMove);
+            this.lblItmeName.BackColor = System.Drawing.Color.Transparent;
+            this.lblItmeName.ContextMenuStrip = this.contextMenuStrip;
+            this.lblItmeName.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblItmeName.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblItmeName.Location = new System.Drawing.Point(5, 153);
+            this.lblItmeName.Name = "lblItmeName";
+            this.lblItmeName.Size = new System.Drawing.Size(110, 46);
+            this.lblItmeName.TabIndex = 2;
+            this.lblItmeName.Text = "写在人生边上";
+            this.lblItmeName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblItmeName.Click += new System.EventHandler(this.lblItemName_Click);
+            this.lblItmeName.MouseLeave += new System.EventHandler(this.Item_MouseLeave);
+            this.lblItmeName.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Book_MouseMove);
             // 
-            // CategoryControl
+            // ItemControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.Controls.Add(this.lblCategoryName);
-            this.Controls.Add(this.pbCategory);
+            this.Controls.Add(this.lblItmeName);
+            this.Controls.Add(this.pbItem);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "CategoryControl";
+            this.Name = "ItemControl";
             this.Size = new System.Drawing.Size(120, 200);
-            this.Load += new System.EventHandler(this.CategoryControl_Load);
-            this.MouseLeave += new System.EventHandler(this.Category_MouseLeave);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Category_MouseMove);
-            ((System.ComponentModel.ISupportInitialize)(this.pbCategory)).EndInit();
+            this.Load += new System.EventHandler(this.ItemControl_Load);
+            this.MouseLeave += new System.EventHandler(this.Item_MouseLeave);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Book_MouseMove);
+            ((System.ComponentModel.ISupportInitialize)(this.pbItem)).EndInit();
             this.contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -114,8 +116,8 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pbCategory;
-        private System.Windows.Forms.Label lblCategoryName;
+        private System.Windows.Forms.PictureBox pbItem;
+        private System.Windows.Forms.Label lblItmeName;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem tsmiReadBook;
         private System.Windows.Forms.ToolStripMenuItem tsmiSearchBook;

@@ -22,15 +22,15 @@ namespace BooksManagement.classes
 
         #endregion
 
-        public List<BookControl> GetPageBooks(int pageNum, int pageBookNum)
+        public List<ItemControl> GetPageBooks(int pageNum, int pageBookNum)
         {
-            List<BookControl> bookControls = new List<BookControl>();
+            List<ItemControl> bookControls = new List<ItemControl>();
 
             List<Book> books = DBInteraction.GetPageBooks(pageBookNum, pageNum);
 
             foreach (Book book in books)
             {
-                BookControl bookControl = new BookControl();
+                ItemControl bookControl = new ItemControl(ShowType.Book);
                 bookControl.Book = book;
                 bookControls.Add(bookControl);
             }
@@ -104,7 +104,7 @@ namespace BooksManagement.classes
                     UpdateaBook(book);
                 }
             }
-            MainForm.DelInitializeBooksUI(true);
+            MainForm.DelInitializeUI(true);
         }
 
         /// <summary>
