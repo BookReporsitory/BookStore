@@ -169,7 +169,7 @@ namespace BooksManagement.classes
         /// <param name="delNode"></param>
         public void DeleteTreeNode(TreeNode delNode)
         {
-            CopyFolder(delNode.Name, BookStoreFolder + "\\" + NoCategory, DBInteraction.GetNoCategoryId());
+            CopyFolder(delNode.Name, BookStoreFolder + "\\" + NoCategory, DBInteraction.GetUncategoryId());
 
             DeleteCagegoryandBooks(delNode);
 
@@ -177,30 +177,36 @@ namespace BooksManagement.classes
             delNode.Remove();
         }
 
-        public int GetLevelTotalCategoryNumber(Category category)
+        public int GetLevelSubCategoryNumber(Category category)
         {
             return Convert.ToInt32(DBInteraction.GetTotalSubCategoryNumbers(category));
         }
 
-        public List<ItemControl> GetSubCategories(Category parentCategory)
+        public Category GetCurrentRootCategory()
         {
-            List<ItemControl> categoryControls = new List<ItemControl>();
+            Category category = DBInteraction.GetBookStoreRootCategory();
+            DBInteraction.GetBooksbyCategoryId(category);
+            return category;
+        }
 
-            List<Category> categories = DBInteraction.GetSubCategories(parentCategory);
+        public ItemControl[] GetSubCategories(Category parentCategory)
+        {
+            Category[] categories = DBInteraction.GetSubCategories(parentCategory);
+            ItemControl[] categoryControls = new ItemControl[categories.Length + parentCategory.Books.Length];
 
-            foreach (Category category in categories)
+            for (int i = 0; i < categories.Length; i++)
             {
                 ItemControl bookControl = new ItemControl(ShowType.Category);
 
-                bookControl.Category = category;
+                bookControl.Category = categories[i];
 
-                categoryControls.Add(bookControl);
+                categoryControls[i] = bookControl;
             }
-            foreach (Book book in parentCategory.Books)
+            for (int j = 0; j < parentCategory.Books.Length; j++)
             {
                 ItemControl bookControl = new ItemControl(ShowType.Book);
-                bookControl.Book = book;
-                categoryControls.Add(bookControl);
+                bookControl.Book = parentCategory.Books[j];
+                categoryControls[categories.Length + j] = bookControl;
             }
 
             return categoryControls;

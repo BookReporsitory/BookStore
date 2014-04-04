@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStripMainForm = new System.Windows.Forms.MenuStrip();
             this.tsmiShowBooks = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiRecentlyRead = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,14 +98,14 @@
             this.tsmiShowBooks.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsmiShowBooks.Image = ((System.Drawing.Image)(resources.GetObject("tsmiShowBooks.Image")));
             this.tsmiShowBooks.Name = "tsmiShowBooks";
-            this.tsmiShowBooks.Size = new System.Drawing.Size(97, 23);
+            this.tsmiShowBooks.Size = new System.Drawing.Size(101, 23);
             this.tsmiShowBooks.Text = "显示方式";
             // 
             // tsmiRecentlyRead
             // 
             this.tsmiRecentlyRead.Image = ((System.Drawing.Image)(resources.GetObject("tsmiRecentlyRead.Image")));
             this.tsmiRecentlyRead.Name = "tsmiRecentlyRead";
-            this.tsmiRecentlyRead.Size = new System.Drawing.Size(138, 24);
+            this.tsmiRecentlyRead.Size = new System.Drawing.Size(142, 24);
             this.tsmiRecentlyRead.Text = "最近阅读";
             this.tsmiRecentlyRead.Click += new System.EventHandler(this.tsmiRecentlyRead_Click);
             // 
@@ -113,7 +113,7 @@
             // 
             this.tsmiCategoryBook.Image = ((System.Drawing.Image)(resources.GetObject("tsmiCategoryBook.Image")));
             this.tsmiCategoryBook.Name = "tsmiCategoryBook";
-            this.tsmiCategoryBook.Size = new System.Drawing.Size(138, 24);
+            this.tsmiCategoryBook.Size = new System.Drawing.Size(142, 24);
             this.tsmiCategoryBook.Text = "分类显示";
             this.tsmiCategoryBook.Click += new System.EventHandler(this.tsmiCategoryBook_Click);
             // 
@@ -124,30 +124,30 @@
             this.tsmiSelectFolder});
             this.tsmiImportBooks.Image = ((System.Drawing.Image)(resources.GetObject("tsmiImportBooks.Image")));
             this.tsmiImportBooks.Name = "tsmiImportBooks";
-            this.tsmiImportBooks.Size = new System.Drawing.Size(92, 23);
+            this.tsmiImportBooks.Size = new System.Drawing.Size(100, 23);
             this.tsmiImportBooks.Text = "导入图书";
             // 
             // tsmiSelectFiles
             // 
             this.tsmiSelectFiles.Image = ((System.Drawing.Image)(resources.GetObject("tsmiSelectFiles.Image")));
             this.tsmiSelectFiles.Name = "tsmiSelectFiles";
-            this.tsmiSelectFiles.Size = new System.Drawing.Size(146, 22);
+            this.tsmiSelectFiles.Size = new System.Drawing.Size(156, 22);
             this.tsmiSelectFiles.Text = "选择文件";
-            this.tsmiSelectFiles.Click += new System.EventHandler(this.tsmiSelectFiles_Click);
+            this.tsmiSelectFiles.Click += new System.EventHandler(this.tsmiImportFiles_Click);
             // 
             // tsmiSelectFolder
             // 
             this.tsmiSelectFolder.Image = ((System.Drawing.Image)(resources.GetObject("tsmiSelectFolder.Image")));
             this.tsmiSelectFolder.Name = "tsmiSelectFolder";
-            this.tsmiSelectFolder.Size = new System.Drawing.Size(146, 22);
+            this.tsmiSelectFolder.Size = new System.Drawing.Size(156, 22);
             this.tsmiSelectFolder.Text = "选择文件夹";
-            this.tsmiSelectFolder.Click += new System.EventHandler(this.tsmiSelectFolder_Click);
+            this.tsmiSelectFolder.Click += new System.EventHandler(this.tsmiImportFolder_Click);
             // 
             // tsmiBookCategory
             // 
             this.tsmiBookCategory.Image = ((System.Drawing.Image)(resources.GetObject("tsmiBookCategory.Image")));
             this.tsmiBookCategory.Name = "tsmiBookCategory";
-            this.tsmiBookCategory.Size = new System.Drawing.Size(92, 23);
+            this.tsmiBookCategory.Size = new System.Drawing.Size(100, 23);
             this.tsmiBookCategory.Text = "图书分类";
             this.tsmiBookCategory.Click += new System.EventHandler(this.tsmiCategoryManage_Click);
             // 
@@ -158,21 +158,21 @@
             this.tsmiFindByDetail});
             this.tsmiFindBook.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFindBook.Image")));
             this.tsmiFindBook.Name = "tsmiFindBook";
-            this.tsmiFindBook.Size = new System.Drawing.Size(92, 23);
+            this.tsmiFindBook.Size = new System.Drawing.Size(100, 23);
             this.tsmiFindBook.Text = "查找图书";
             // 
             // tsmiFindByBookName
             // 
             this.tsmiFindByBookName.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFindByBookName.Image")));
             this.tsmiFindByBookName.Name = "tsmiFindByBookName";
-            this.tsmiFindByBookName.Size = new System.Drawing.Size(132, 22);
+            this.tsmiFindByBookName.Size = new System.Drawing.Size(140, 22);
             this.tsmiFindByBookName.Text = "书名查找";
             // 
             // tsmiFindByDetail
             // 
             this.tsmiFindByDetail.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFindByDetail.Image")));
             this.tsmiFindByDetail.Name = "tsmiFindByDetail";
-            this.tsmiFindByDetail.Size = new System.Drawing.Size(132, 22);
+            this.tsmiFindByDetail.Size = new System.Drawing.Size(140, 22);
             this.tsmiFindByDetail.Text = "高级查找";
             // 
             // tsmiShowControl
@@ -269,9 +269,9 @@
             this.llblPageUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.llblPageUp.AutoSize = true;
             this.llblPageUp.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.llblPageUp.Location = new System.Drawing.Point(371, 6);
+            this.llblPageUp.Location = new System.Drawing.Point(368, 6);
             this.llblPageUp.Name = "llblPageUp";
-            this.llblPageUp.Size = new System.Drawing.Size(43, 15);
+            this.llblPageUp.Size = new System.Drawing.Size(55, 15);
             this.llblPageUp.TabIndex = 3;
             this.llblPageUp.TabStop = true;
             this.llblPageUp.Text = "上一页";
@@ -282,7 +282,7 @@
             this.cbPageNumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cbPageNumber.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPageNumber.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbPageNumber.Location = new System.Drawing.Point(422, 2);
+            this.cbPageNumber.Location = new System.Drawing.Point(424, 2);
             this.cbPageNumber.Name = "cbPageNumber";
             this.cbPageNumber.Size = new System.Drawing.Size(56, 23);
             this.cbPageNumber.TabIndex = 2;
@@ -295,7 +295,7 @@
             this.llblPageDown.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.llblPageDown.Location = new System.Drawing.Point(486, 6);
             this.llblPageDown.Name = "llblPageDown";
-            this.llblPageDown.Size = new System.Drawing.Size(43, 15);
+            this.llblPageDown.Size = new System.Drawing.Size(55, 15);
             this.llblPageDown.TabIndex = 5;
             this.llblPageDown.TabStop = true;
             this.llblPageDown.Text = "下一页";
@@ -308,7 +308,7 @@
             this.lblTotalPageNumber.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalPageNumber.Location = new System.Drawing.Point(537, 6);
             this.lblTotalPageNumber.Name = "lblTotalPageNumber";
-            this.lblTotalPageNumber.Size = new System.Drawing.Size(43, 15);
+            this.lblTotalPageNumber.Size = new System.Drawing.Size(51, 15);
             this.lblTotalPageNumber.TabIndex = 4;
             this.lblTotalPageNumber.Text = "共 0 页";
             // 
@@ -333,14 +333,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvBooks.BackgroundColor = System.Drawing.SystemColors.ControlDark;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvBooks.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvBooks.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvBooks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBooks.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID,
@@ -438,7 +438,6 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "电子书管理系统";
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.menuStripMainForm.ResumeLayout(false);
             this.menuStripMainForm.PerformLayout();

@@ -18,7 +18,7 @@ namespace BooksManagement.DBOpreation
             Category category = new Category();
             category.CategoryName = categoryName;
 
-            GetCategory(category);
+            IfHasCategory(category);
 
             if (String.IsNullOrEmpty(category.Id))
             {
@@ -73,7 +73,7 @@ namespace BooksManagement.DBOpreation
             return result > 0;
         }
 
-        static public bool GetCategory(Category category)
+        static public bool IfHasCategory(Category category)
         {
             string sql = "select id from category where categoryname = ?categoryname";
             MySqlParameter[] parameters = { new MySqlParameter("?categoryname", category.CategoryName) };
@@ -84,6 +84,7 @@ namespace BooksManagement.DBOpreation
             }
             catch (Exception ex)
             {
+                MessageBox.Show("IfHasCategory error:　" + ex);
                 return false;
             }
             category.Id = result as string ?? String.Empty;
@@ -91,7 +92,7 @@ namespace BooksManagement.DBOpreation
             return true;
         }
 
-        static public string GetNoCategoryId()
+        static public string GetUncategoryId()
         {
             string sql = "select id from category where categoryname = '未分类'";
             object result;
@@ -101,13 +102,13 @@ namespace BooksManagement.DBOpreation
             }
             catch (Exception ex)
             {
-                MessageBox.Show("GetNoCategoryId error:　" + ex);
+                MessageBox.Show("GetUncategoryId error:　" + ex);
                 return string.Empty;
             }
             return result as string;
         }
 
-        static public Category GetBookStoreCategory()
+        static public Category GetBookStoreRootCategory()
         {
             Category category = new Category();
             string sql = "select id, categoryname from category where categoryname = 'BookStore'";
@@ -145,6 +146,7 @@ namespace BooksManagement.DBOpreation
             }
             catch (Exception ex)
             {
+                MessageBox.Show("UpdateCategory error:" + ex);
                 return false;
             }
             if (result > 0)
@@ -172,7 +174,7 @@ namespace BooksManagement.DBOpreation
             return result ?? 0;
         }
 
-        static public List<Category> GetSubCategories(Category parentCategory)
+        static public Category[] GetSubCategories(Category parentCategory)
         {
             List<Category> categories = new List<Category>();
             string sql = "SELECT id, parentid, categoryname FROM `category` where parentid = ?parentid order by categoryname desc;";
@@ -190,7 +192,7 @@ namespace BooksManagement.DBOpreation
                         category.Id = msdr["id"].ToString();
                         category.ParentId = msdr["parentid"].ToString();
                         category.CategoryName = msdr["categoryname"].ToString();
-
+                        GetBooksbyCategoryId(category);
                         categories.Add(category);
                     }
                 }
@@ -200,34 +202,36 @@ namespace BooksManagement.DBOpreation
                 MessageBox.Show("GetSubCategories error:　" + ex.Message);
             }
 
-            return categories;
+            return categories.ToArray();
         }
 
         #endregion
 
         #region Books Operation
 
-        static public bool GetBooksbyCategoryId(Category catagory)
+        static public bool GetBooksbyCategoryId(Category category)
         {
             string sql =
                 "select id, categoryid, bookname, location, picture, uri, readtimes from book where categoryid = ?categoryid order by bookname desc;";
-            MySqlParameter[] parameters = { new MySqlParameter("?categoryid", catagory.Id) };
+            MySqlParameter[] parameters = { new MySqlParameter("?categoryid", category.Id) };
             try
             {
                 using (MySqlDataReader msdr = MySqlHelper.ExecuteReader(CommandType.Text, sql, parameters))
                 {
+                    List<Book> categoryBooks = new List<Book>();
                     while (msdr.Read())
                     {
                         Book book = new Book();
                         book.Id = msdr["id"].ToString();
-                        book.CategoryId = catagory.Id;
+                        book.CategoryId = category.Id;
                         book.BookName = msdr["bookname"].ToString();
                         book.Location = msdr["location"].ToString();
                         book.Picutre = msdr["picture"].ToString();
                         book.URI = msdr["uri"].ToString();
                         book.ReadTimes = (int)msdr["readtimes"];
-                        catagory.Books.Add(book);
+                        categoryBooks.Add(book);
                     }
+                    category.Books = categoryBooks.ToArray();
                 }
                 return true;
             }
@@ -384,7 +388,7 @@ namespace BooksManagement.DBOpreation
             return result ?? 0;
         }
 
-        static public List<Book> GetPageBooks(int pageSize, int pageNum)
+        static public Book[] GetPageBooks(int pageSize, int pageNum)
         {
             int startPoint = (pageNum - 1) * pageSize;
             List<Book> books = new List<Book>();
@@ -416,8 +420,7 @@ namespace BooksManagement.DBOpreation
             {
                 MessageBox.Show("GetPageBooks error:　" + ex.Message);
             }
-
-            return books;
+            return books.ToArray();
         }
 
         /// <summary>

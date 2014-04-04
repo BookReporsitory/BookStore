@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using BooksManagement.Controls;
@@ -32,12 +33,12 @@ namespace BooksManagement.Forms
         static private Category _currentCategory;
         static private Stack<Category> _categoryStack = new Stack<Category>();
 
-        private List<ItemControl> _itemControls = new List<ItemControl>();
+        private ItemControl[] _itemControls;
         private readonly CategoryManagement categoryManagement = new CategoryManagement();
         private readonly BookManagement bookManagement = new BookManagement();
 
-        public delegate void DelegeteInitBookUI(bool initHoleUI);
-        static public DelegeteInitBookUI DelInitializeUI;
+        public delegate void DelegeteInitBookUI(bool separatePage);
+        static public DelegeteInitBookUI DelegeteInitializeUI;
 
         #endregion
 
@@ -46,7 +47,7 @@ namespace BooksManagement.Forms
         public MainForm()
         {
             InitializeComponent();
-            DelInitializeUI = InitializeUI;
+            DelegeteInitializeUI = showUI;
         }
 
         static public Category CurrentCategory
@@ -63,7 +64,8 @@ namespace BooksManagement.Forms
         {
             lblPageMessage.Text = string.Empty;
             lblCategoryMessage.Text = string.Empty;
-            InitializeUI(true);
+            _currentCategory = categoryManagement.GetCurrentRootCategory();
+            separatePageNum();
         }
 
         #endregion
@@ -76,9 +78,9 @@ namespace BooksManagement.Forms
             frm.ShowDialog();
         }
 
-        private void MainForm_ResizeEnd(object sender, EventArgs e)
+        private void MainForm_SizeChanged(object sender, EventArgs e)
         {
-            InitializeUI(true);
+            separatePageNum();
         }
 
         #region Control Pages
@@ -108,7 +110,7 @@ namespace BooksManagement.Forms
         private void cbPageNumber_SelectedIndexChanged(object sender, EventArgs e)
         {
             _pageNum = cbPageNumber.SelectedIndex + 1;
-            InitializeUI(false);
+            showUI(false);
         }
 
         private void btnReturnCategory_Click(object sender, EventArgs e)
@@ -116,7 +118,7 @@ namespace BooksManagement.Forms
             if (_categoryStack.Count > 0)
             {
                 _currentCategory = _categoryStack.Pop();
-                InitializeUI(true);
+                showUI(true);
             }
             else
             {
@@ -128,7 +130,7 @@ namespace BooksManagement.Forms
 
         #region Import Books
 
-        private void tsmiSelectFiles_Click(object sender, EventArgs e)
+        private void tsmiImportFiles_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = @"D:\";
@@ -155,10 +157,10 @@ namespace BooksManagement.Forms
             {
                 MessageBox.Show(Resources.MainForm_tsmiSelectFiles_Click_ErrorAddBooks + ex.Message);
             }
-            InitializeUI(true);
+            showUI(true);
         }
 
-        private void tsmiSelectFolder_Click(object sender, EventArgs e)
+        private void tsmiImportFolder_Click(object sender, EventArgs e)
         {
             try
             {
@@ -180,7 +182,7 @@ namespace BooksManagement.Forms
             {
                 MessageBox.Show(Resources.MainForm_tsmiSelectFolder_Click_addBooksFolderError + ex.Message);
             }
-            InitializeUI(true);
+            showUI(true);
         }
 
         #endregion
@@ -191,8 +193,8 @@ namespace BooksManagement.Forms
         {
             if (_showType != ShowType.Book)
             {
-                _showType = ShowType.Book;
-                showPicture();
+                showCategoryBookStyle(ShowType.Book);
+                showUI(false);
             }
         }
 
@@ -200,8 +202,8 @@ namespace BooksManagement.Forms
         {
             if (_showType != ShowType.Category)
             {
-                _showType = ShowType.Category;
-                showPicture();
+                showCategoryBookStyle(ShowType.Category);
+                showUI(false);
             }
         }
 
@@ -219,18 +221,19 @@ namespace BooksManagement.Forms
             panelItemList.Visible = false;
         }
 
-        private void showPicture()
+        #endregion
+
+        #endregion
+
+        private void showCategoryBookStyle(ShowType type)
         {
+            separatePageNum();
+            _showType = type;
             dgvBooks.Visible = false;
             panelItemList.Visible = true;
-            InitializeUI(true);
         }
 
-        #endregion
-
-        #endregion
-
-        public void ShowControls()
+        private void showControls()
         {
             if (_showType == ShowType.Book)
             {
@@ -241,53 +244,23 @@ namespace BooksManagement.Forms
                 _itemControls = categoryManagement.GetSubCategories(_currentCategory);
             }
 
-            _showBookNum = _itemControls.Count;
+            _showBookNum = _itemControls.Count();
 
-            ShowItems();
+            BeginInvoke(new MethodInvoker(showItems));
         }
 
-
-        private void InitializeUI(bool initHoleUI)
+        private void showUI(bool separatePage)
         {
-            if (InvokeRequired)
+            if (separatePage)
             {
-                BeginInvoke(new DelegeteInitBookUI(InitializeUI), new object[] { initHoleUI });
-                return;
-            }
-
-            if (initHoleUI)
-            {
-                // Get show item numbers
-                if (_showType == ShowType.Book)
-                {
-                    _totalItemNUm = bookManagement.GetTotalPageNumber();
-                }
-                else if (_showType == ShowType.Category)
-                {
-                    if (_currentCategory == null)
-                    {
-                        _currentCategory = DBInteraction.GetBookStoreCategory();
-                    }
-                    DBInteraction.GetBooksbyCategoryId(_currentCategory);
-                    _totalItemNUm = categoryManagement.GetLevelTotalCategoryNumber(_currentCategory) + _currentCategory.Books.Count;
-                }
-                if (_totalItemNUm != 0)
-                {
-                    ManagePageNum();
-                }
+                separatePageNum();
             }
             // Show Items
-            new Thread(ShowControls).Start();
+            new Thread(showControls).Start();
         }
 
-        private void ShowItems()
+        private void showItems()
         {
-            if (InvokeRequired)
-            {
-                BeginInvoke(new MethodInvoker(ShowItems));
-                return;
-            }
-
             if (_showType == ShowType.Book)
             {
                 panelCategoryControl.Hide();
@@ -319,34 +292,33 @@ namespace BooksManagement.Forms
             }
         }
 
-        private void ManagePageNum()
+        private void separatePageNum()
         {
             _lineItems = Math.Floor((double)panelItemList.Width / ItemWide);
+
             if (_showType == ShowType.Book)
             {
+                _totalItemNUm = bookManagement.GetTotalPageNumber();
+
                 _lines = Math.Floor((double)panelItemList.Height / ItemHeight);
+
+                _pageBookNum = (int)(_lines * _lineItems);
+
+                _totalPageNum = (int)Math.Ceiling((double)_totalItemNUm / _pageBookNum);
+                lblTotalPageNumber.Text = string.Format("共 {0} 页", _totalPageNum);
+
+                List<string> selectPageNums = new List<string>();
+                for (int i = 1; i <= _totalPageNum; i++)
+                {
+                    selectPageNums.Add(i.ToString());
+                }
+                cbPageNumber.DataSource = selectPageNums;
             }
             else if (_showType == ShowType.Category)
             {
+                _totalItemNUm = categoryManagement.GetLevelSubCategoryNumber(_currentCategory) + _currentCategory.Books.Length;
                 _lines = Math.Ceiling(_totalItemNUm / _lineItems);
             }
-            _pageBookNum = (int)(_lines * _lineItems);
-
-            _totalPageNum = (int)Math.Ceiling((double)_totalItemNUm / _pageBookNum);
-            lblTotalPageNumber.Text = string.Format("共 {0} 页", _totalPageNum);
-
-            List<string> selectPageNums = new List<string>();
-            for (int i = 1; i <= _totalPageNum; i++)
-            {
-                selectPageNums.Add(i.ToString());
-            }
-            cbPageNumber.DataSource = selectPageNums;
-            //cbPageNumber.SelectedIndex = 0;
-        }
-
-        private void MainForm_SizeChanged(object sender, EventArgs e)
-        {
-            //InitializeUI(true);
         }
 
     }

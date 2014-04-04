@@ -74,7 +74,7 @@ namespace BooksManagement.Controls
             else if (showType == ShowType.Category)
             {
                 MainForm.CurrentCategory = category;
-                MainForm.DelInitializeUI(true);
+                MainForm.DelegeteInitializeUI(true);
             }
             else
             {
@@ -91,7 +91,7 @@ namespace BooksManagement.Controls
             else if (showType == ShowType.Category)
             {
                 MainForm.CurrentCategory = category;
-                MainForm.DelInitializeUI(true);
+                MainForm.DelegeteInitializeUI(true);
             }
             else
             {

@@ -22,17 +22,17 @@ namespace BooksManagement.classes
 
         #endregion
 
-        public List<ItemControl> GetPageBooks(int pageNum, int pageBookNum)
+        public ItemControl[] GetPageBooks(int pageNum, int pageBookNum)
         {
-            List<ItemControl> bookControls = new List<ItemControl>();
+            Book[] books = DBInteraction.GetPageBooks(pageBookNum, pageNum);
 
-            List<Book> books = DBInteraction.GetPageBooks(pageBookNum, pageNum);
+            ItemControl[] bookControls = new ItemControl[books.Length];
 
-            foreach (Book book in books)
+            for (int i = 0; i < books.Length; i++)
             {
                 ItemControl bookControl = new ItemControl(ShowType.Book);
-                bookControl.Book = book;
-                bookControls.Add(bookControl);
+                bookControl.Book = books[i];
+                bookControls[i] = bookControl;
             }
 
             return bookControls;
@@ -83,7 +83,9 @@ namespace BooksManagement.classes
                 {
                     continue;
                 }
-                byte[] pageSourceBytes = wc.DownloadData(new Uri(string.Format(URI, book.BookName.Substring(0, book.BookName.LastIndexOf('.')))));
+                byte[] pageSourceBytes =
+                    wc.DownloadData(
+                        new Uri(string.Format(URI, book.BookName.Substring(0, book.BookName.LastIndexOf('.')))));
                 string pageSource = Encoding.GetEncoding("utf-8").GetString(pageSourceBytes);
 
                 MatchCollection mc = Regex.Matches(pageSource, @"<\s?img[^>]+src=""([^""]+)""");
@@ -104,7 +106,7 @@ namespace BooksManagement.classes
                     UpdateaBook(book);
                 }
             }
-            MainForm.DelInitializeUI(true);
+            //MainForm.DelegeteInitializeUI(true);
         }
 
         /// <summary>

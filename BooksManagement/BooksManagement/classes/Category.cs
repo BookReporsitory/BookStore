@@ -13,7 +13,7 @@ namespace BooksManagement.classes
 
         private string categoryName;
 
-        private List<Book> books = new List<Book>();
+        private Book[] books = new Book[0];
 
         public string CategoryName
         {
@@ -27,7 +27,7 @@ namespace BooksManagement.classes
             set { id = value; }
         }
 
-        public List<Book> Books
+        public Book[] Books
         {
             get { return books; }
             set { books = value; }
